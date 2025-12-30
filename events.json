@@ -1,6 +1,11 @@
 {
   "users": [
     {
+      "id": 0,
+      "name": "Guest User",
+      "image": "src/images/guest-user.png"
+    },
+    {
       "id": 1,
       "name": "Michael Turner",
       "image": "https://wincacademy.github.io/webpages/media/person6.jpeg"
