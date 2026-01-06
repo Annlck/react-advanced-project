@@ -1,7 +1,19 @@
-import { Card, Image, Text, HStack } from "@chakra-ui/react";
+import { Card, Image, Text, HStack, Tag, Flex } from "@chakra-ui/react";
 import { Time } from "./Time";
 
-export const EventCard = ({ event }) => {
+export const EventCard = ({ event, categoryNames }) => {
+  const matchCategories = (eventCategoryId) => {
+    let categoryName;
+
+    categoryNames.forEach((category) => {
+      if (eventCategoryId === category.id) {
+        categoryName = category.name;
+        return categoryName;
+      }
+    });
+    return categoryName;
+  };
+
   return (
     <Card.Root
       maxW="sm"
@@ -18,10 +30,26 @@ export const EventCard = ({ event }) => {
         <Card.Description>{event.description}</Card.Description>
 
         <HStack>
-          <Time timestamp={event.startTime} />
+          {event.startTime.length > 5 ? (
+            <Time timestamp={event.startTime} />
+          ) : (
+            <Text> {event.startTime} </Text>
+          )}
           <Text> - </Text>
-          <Time timestamp={event.startTime} />
+          {event.endTime.length > 5 ? (
+            <Time timestamp={event.endTime} />
+          ) : (
+            <Text> {event.endTime} </Text>
+          )}
         </HStack>
+
+        <Flex>
+          {event.categoryIds.map((id) => (
+            <Tag.Root key={id} size="lg" mr="1" my="1" colorPalette="teal">
+              <Tag.Label>{matchCategories(id)}</Tag.Label>
+            </Tag.Root>
+          ))}
+        </Flex>
       </Card.Body>
     </Card.Root>
   );

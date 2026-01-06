@@ -10,7 +10,9 @@ import {
 } from "@chakra-ui/react";
 import { LuChevronLeft } from "react-icons/lu";
 import { useLoaderData, Link } from "react-router-dom";
+import { useContext } from "react";
 import { Time } from "../components/Time";
+import { EventsContext } from "../EventsContext";
 
 export const loader = async ({ params }) => {
   const event = await fetch(`http://localhost:3000/events/${params.eventId}`);
@@ -20,6 +22,7 @@ export const loader = async ({ params }) => {
 export const EventPage = () => {
   scrollTo(top);
   const { event } = useLoaderData();
+  const { deleteEvent } = useContext(EventsContext);
 
   return (
     <Center>
@@ -53,14 +56,22 @@ export const EventPage = () => {
           <Text>{event.description}</Text>
 
           <Separator my={{ base: "4", lg: "6" }} />
+          <Text>{event.location}</Text>
           <HStack>
-            <Text>Start </Text>
-            <Time timestamp={event.startTime} />
+            {event.startTime.length > 5 ? (
+              <Time timestamp={event.startTime} />
+            ) : (
+              <Text> {event.startTime} </Text>
+            )}
+            <Text> - </Text>
+            {event.endTime.length > 5 ? (
+              <Time timestamp={event.endTime} />
+            ) : (
+              <Text> {event.endTime} </Text>
+            )}
           </HStack>
-          <HStack>
-            <Text>End </Text>
-            <Time timestamp={event.endTime} />
-          </HStack>
+
+          <Button onClick={() => deleteEvent(event.id)}>Delete Event</Button>
         </Box>
       </Box>
     </Center>
