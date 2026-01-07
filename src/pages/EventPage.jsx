@@ -7,6 +7,8 @@ import {
   Text,
   Separator,
   HStack,
+  Flex,
+  Tag,
 } from "@chakra-ui/react";
 import { LuChevronLeft } from "react-icons/lu";
 import { useLoaderData, Link } from "react-router-dom";
@@ -22,7 +24,7 @@ export const loader = async ({ params }) => {
 export const EventPage = () => {
   scrollTo(top);
   const { event } = useLoaderData();
-  const { deleteEvent } = useContext(EventsContext);
+  const { deleteEvent, matchCategories } = useContext(EventsContext);
 
   return (
     <Center>
@@ -70,6 +72,14 @@ export const EventPage = () => {
               <Text> {event.endTime} </Text>
             )}
           </HStack>
+
+          <Flex>
+            {event.categoryIds.map((id) => (
+              <Tag.Root key={id} size="lg" mr="1" my="1" colorPalette="teal">
+                <Tag.Label>{matchCategories(id)}</Tag.Label>
+              </Tag.Root>
+            ))}
+          </Flex>
 
           <Button onClick={() => deleteEvent(event.id)}>Delete Event</Button>
         </Box>

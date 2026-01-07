@@ -1,5 +1,4 @@
 "use client";
-import { useForm } from "react-hook-form";
 import {
   Button,
   Input,
@@ -11,10 +10,13 @@ import {
   Checkbox,
   CheckboxGroup,
   Fieldset,
+  Text,
 } from "@chakra-ui/react";
 import { FileUpload, Float, useFileUploadContext } from "@chakra-ui/react";
 import { LuFileImage, LuX } from "react-icons/lu";
-import { useState, useEffect } from "react";
+import { useState, useContext } from "react";
+import { useForm } from "react-hook-form";
+import { EventsContext } from "../EventsContext";
 
 const FileUploadList = () => {
   const fileUpload = useFileUploadContext();
@@ -30,6 +32,8 @@ const FileUploadList = () => {
           file={file}
           key={file.name}
         >
+          {console.log(file.name)}
+          {console.log(file)}
           <FileUpload.ItemPreviewImage />
           <Float placement="top-end">
             <FileUpload.ItemDeleteTrigger boxSize="4" layerStyle="fill.solid">
@@ -46,6 +50,7 @@ export default function EventFormDialog({ open, onClose, finish }) {
   const {
     register,
     handleSubmit,
+    // control,
     formState: { errors, isSubmitting },
   } = useForm();
 
@@ -56,13 +61,15 @@ export default function EventFormDialog({ open, onClose, finish }) {
       createdBy: 0,
       title: "",
       description: "",
-      image: "src/images/new-event.png",
+      image: "http://localhost:5173/src/images/new-event.png",
       categoryIds: [],
       location: "",
       startTime: "",
       endTime: "",
     },
   });
+
+  const { categories } = useContext(EventsContext);
 
   // addEvent function
   const addEvent = async (data) => {
@@ -74,7 +81,7 @@ export default function EventFormDialog({ open, onClose, finish }) {
         createdBy: 0,
         title: data.title,
         description: data.description,
-        image: "src/images/new-event.jpg",
+        image: "http://localhost:5173/src/images/new-event.jpg",
         categoryIds: checked,
         location: data.location,
         startTime: data.startTime,
@@ -83,17 +90,6 @@ export default function EventFormDialog({ open, onClose, finish }) {
     });
     finish();
   };
-
-  // GET categories from events.json for checkboxes
-  const [categories, setCategories] = useState([]);
-  useEffect(() => {
-    async function fetchCategories() {
-      const response = await fetch("http://localhost:3000/categories");
-      const json = await response.json();
-      setCategories(json);
-    }
-    fetchCategories();
-  }, []);
 
   // handleChange checkboxes
   const [checked, setChecked] = useState([]);
@@ -109,16 +105,16 @@ export default function EventFormDialog({ open, onClose, finish }) {
       <Dialog.Backdrop />
       <Dialog.Positioner>
         <Dialog.Content>
-          <Dialog.Header>Add Event</Dialog.Header>
+          <Dialog.Header textStyle="xl">Create a new event</Dialog.Header>
           <form onSubmit={handleSubmit(addEvent)}>
             <Dialog.Body>
               {/* event title */}
-              <Field.Root invalid={errors.title} mt={4}>
+              <Field.Root invalid={errors.title} mt={0}>
                 <Field.Label>Event title</Field.Label>
                 <Input
                   type="text"
-                  placeholder="i.e. bowling night"
-                  {...register("title", { required: "title is required" })}
+                  placeholder="i.e. Bowling night"
+                  {...register("title", { required: "Title is required" })}
                 />
                 <Field.ErrorText>{errors.title?.message}</Field.ErrorText>
               </Field.Root>
@@ -127,9 +123,9 @@ export default function EventFormDialog({ open, onClose, finish }) {
               <Field.Root invalid={errors.description} mt={4}>
                 <Field.Label>Description</Field.Label>
                 <Textarea
-                  placeholder="tell a bit more about the event"
+                  placeholder="i.e. Strike up some fun with friends at the lanes!"
                   {...register("description", {
-                    required: "description is required",
+                    required: "Description is required",
                   })}
                 />
                 <Field.ErrorText>{errors.location?.message}</Field.ErrorText>
@@ -140,9 +136,9 @@ export default function EventFormDialog({ open, onClose, finish }) {
                 <Field.Label>Location</Field.Label>
                 <Input
                   type="location"
-                  placeholder="i.e. bowling alley"
+                  placeholder="i.e. Downtown Bowling Alley"
                   {...register("location", {
-                    required: "location is required",
+                    required: "Location is required",
                   })}
                 />
                 <Field.ErrorText>{errors.location?.message}</Field.ErrorText>
@@ -155,7 +151,7 @@ export default function EventFormDialog({ open, onClose, finish }) {
                   <Input
                     type="time"
                     {...register("startTime", {
-                      required: "startTime is required",
+                      required: "Start time is required",
                     })}
                   />
                   <Field.ErrorText>{errors.startTime?.message}</Field.ErrorText>
@@ -167,7 +163,7 @@ export default function EventFormDialog({ open, onClose, finish }) {
                   <Input
                     type="time"
                     {...register("endTime", {
-                      required: "endTime is required",
+                      required: "End time is required",
                     })}
                   />
                   <Field.ErrorText>{errors.endTime?.message}</Field.ErrorText>
@@ -212,6 +208,7 @@ export default function EventFormDialog({ open, onClose, finish }) {
               </HStack>
             </Dialog.Body>
 
+            {/* footer buttons */}
             <Dialog.Footer>
               <VStack w="full" spacing={3}>
                 <Button
@@ -225,6 +222,7 @@ export default function EventFormDialog({ open, onClose, finish }) {
                 <Button type="submit" isLoading={isSubmitting} width="full">
                   Add event
                 </Button>
+                {errors.name && <Text>{errors.name.message}</Text>}
               </VStack>
             </Dialog.Footer>
           </form>

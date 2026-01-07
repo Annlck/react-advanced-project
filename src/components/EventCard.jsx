@@ -1,18 +1,10 @@
 import { Card, Image, Text, HStack, Tag, Flex } from "@chakra-ui/react";
 import { Time } from "./Time";
+import { useContext } from "react";
+import { EventsContext } from "../EventsContext";
 
-export const EventCard = ({ event, categoryNames }) => {
-  const matchCategories = (eventCategoryId) => {
-    let categoryName;
-
-    categoryNames.forEach((category) => {
-      if (eventCategoryId === category.id) {
-        categoryName = category.name;
-        return categoryName;
-      }
-    });
-    return categoryName;
-  };
+export const EventCard = ({ event }) => {
+  const { matchCategories } = useContext(EventsContext);
 
   return (
     <Card.Root

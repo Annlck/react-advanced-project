@@ -1,6 +1,6 @@
 import { Flex, Link } from "@chakra-ui/react";
-import { useState } from "react";
 import EventFormDialog from "./EventFormDialog";
+import { useState } from "react";
 
 export const Navigation = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -26,7 +26,10 @@ export const Navigation = () => {
           paddingY="2"
           gap="8"
         >
+          {/* events page */}
           <Link href="/">Events</Link>
+
+          {/* add event page */}
           <Link
             onClick={() => {
               setModalOpen(true);
@@ -34,6 +37,8 @@ export const Navigation = () => {
           >
             Add Event
           </Link>
+
+          {/* contact page */}
           <Link href="/contact">Contact us</Link>
         </Flex>
       </nav>

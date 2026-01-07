@@ -5,15 +5,13 @@ import { EventCard } from "../components/EventCard";
 
 export const loader = async () => {
   const eventsResponse = await fetch("http://localhost:3000/events");
-  const categoriesResponse = await fetch("http://localhost:3000/categories");
   return {
     events: await eventsResponse.json(),
-    categories: await categoriesResponse.json(),
   };
 };
 
 export const EventsPage = () => {
-  const { events, categories } = useLoaderData();
+  const { events } = useLoaderData();
 
   return (
     <>
@@ -21,11 +19,7 @@ export const EventsPage = () => {
         {events.map((event) => (
           <div key={event.id}>
             <Link to={`events/${event.id}`}>
-              <EventCard
-                key={event.id}
-                event={event}
-                categoryNames={categories}
-              />
+              <EventCard key={event.id} event={event} />
             </Link>
           </div>
         ))}
