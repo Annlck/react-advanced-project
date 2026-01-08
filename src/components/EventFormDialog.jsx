@@ -17,7 +17,9 @@ import { LuFileImage, LuX } from "react-icons/lu";
 import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { EventsContext } from "../EventsContext";
+import { useNavigate } from "react-router-dom";
 
+// image upload
 const FileUploadList = () => {
   const fileUpload = useFileUploadContext();
   const files = fileUpload.acceptedFiles;
@@ -46,48 +48,40 @@ const FileUploadList = () => {
   );
 };
 
+// form dialog
 export default function EventFormDialog({ open, onClose, finish }) {
+  const { categories } = useContext(EventsContext);
+
   const {
     register,
     handleSubmit,
-    // control,
     formState: { errors, isSubmitting },
   } = useForm();
 
-  // set default values
-  useForm({
-    defaultValues: {
-      id: self.crypto.randomUUID(),
-      createdBy: 0,
-      title: "",
-      description: "",
-      image: "http://localhost:5173/src/images/new-event.png",
-      categoryIds: [],
-      location: "",
-      startTime: "",
-      endTime: "",
-    },
-  });
-
-  const { categories } = useContext(EventsContext);
+  // set up useNaviage hook
+  const navigate = useNavigate();
 
   // addEvent function
   const addEvent = async (data) => {
+    const newEvent = {
+      id: self.crypto.randomUUID(),
+      createdBy: 0,
+      title: data.title,
+      description: data.description,
+      image: "http://localhost:5173/src/images/new-event.jpg",
+      categoryIds: checked,
+      location: data.location,
+      startTime: data.startTime,
+      endTime: data.endTime,
+    };
+
     await fetch("http://localhost:3000/events", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        id: self.crypto.randomUUID(),
-        createdBy: 0,
-        title: data.title,
-        description: data.description,
-        image: "http://localhost:5173/src/images/new-event.jpg",
-        categoryIds: checked,
-        location: data.location,
-        startTime: data.startTime,
-        endTime: data.endTime,
-      }),
+      body: JSON.stringify(newEvent),
     });
+
+    navigate(`/events/${newEvent.id}`);
     finish();
   };
 
