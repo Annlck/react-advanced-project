@@ -1,9 +1,10 @@
-import { SimpleGrid, AbsoluteCenter, Heading } from "@chakra-ui/react";
+import { SimpleGrid, AbsoluteCenter, Heading, Button } from "@chakra-ui/react";
 import { useLoaderData, Link } from "react-router-dom";
 import { EventCard } from "../components/EventCard";
 import { CategoryFilter } from "../components/CategoryFilter";
 import { useContext } from "react";
 import { EventsContext } from "../EventsContext";
+import { useState } from "react";
 
 export const loader = async () => {
   const eventsResponse = await fetch("http://localhost:3000/events");
@@ -14,26 +15,24 @@ export const loader = async () => {
 
 export const EventsPage = () => {
   const { allEvents } = useLoaderData();
-  const { selectedCheckboxes, filteredEvents } = useContext(EventsContext);
+  const { selectedCheckboxes } = useContext(EventsContext);
+  const [filteredEvents, setFilteredEvents] = useState([]);
 
-  console.log("allEvents");
-  console.log(allEvents);
-
-  console.log("selectedCheckboxes");
-  console.log(selectedCheckboxes);
-
-  console.log("selectedCheckboxes length");
-  console.log(selectedCheckboxes.length);
-
-  console.log("filteredEvents");
-  console.log(filteredEvents);
-
-  console.log("filteredEvents length");
-  console.log(filteredEvents.length);
+  // filter events based on selectedCheckboxes
+  const filterEvents = () => {
+    const eventsArray = allEvents.filter(({ categoryIds }) => {
+      return selectedCheckboxes.some((id) => {
+        return categoryIds.includes(id);
+      });
+    });
+    setFilteredEvents(eventsArray);
+  };
 
   return (
     <>
       <CategoryFilter />
+
+      <Button onClick={filterEvents}>Apply filter</Button>
 
       {filteredEvents.length === 0 ? (
         <AbsoluteCenter>
