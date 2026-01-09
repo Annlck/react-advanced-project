@@ -1,4 +1,4 @@
-import { SimpleGrid, AbsoluteCenter, Heading, Button } from "@chakra-ui/react";
+import { SimpleGrid, Button } from "@chakra-ui/react";
 import { useLoaderData, Link } from "react-router-dom";
 import { EventCard } from "../components/EventCard";
 import { CategoryFilter } from "../components/CategoryFilter";
@@ -34,10 +34,16 @@ export const EventsPage = () => {
 
       <Button onClick={filterEvents}>Apply filter</Button>
 
-      {filteredEvents.length === 0 ? (
-        <AbsoluteCenter>
-          <Heading> No events found</Heading>
-        </AbsoluteCenter>
+      {/* flawed, it shows all events if no chechboxes are selected, as soon as a checkbox is selected, it sows "fliteredEvents" 
+      (which is always 1 step slower) */}
+      {selectedCheckboxes.length === 0 ? (
+        <SimpleGrid columns={[1, 2, 2, 3, 4]} gap="6" p="10" justify="center">
+          {allEvents.map((event) => (
+            <Link to={`events/${event.id}`} key={event.id}>
+              <EventCard key={event.id} event={event} />
+            </Link>
+          ))}
+        </SimpleGrid>
       ) : (
         <SimpleGrid columns={[1, 2, 2, 3, 4]} gap="6" p="10" justify="center">
           {filteredEvents.map((event) => (
