@@ -2,10 +2,8 @@ import { SimpleGrid, Button } from "@chakra-ui/react";
 import { useLoaderData, Link } from "react-router-dom";
 import { EventCard } from "../components/EventCard";
 import { Checkbox, CheckboxGroup, Fieldset } from "@chakra-ui/react";
-import { useReducer } from "react";
-import { useContext } from "react";
+import { useReducer, useContext } from "react";
 import { EventsContext } from "../EventsContext";
-import { useState } from "react";
 import { eventsReducer } from "../eventsReducer";
 
 export const loader = async () => {
@@ -18,21 +16,11 @@ export const loader = async () => {
 export const EventsPage = () => {
   const { categories } = useContext(EventsContext);
   const { allEvents } = useLoaderData();
-  const [filteredEvents, setFilteredEvents] = useState([]);
   const [state, dispatch] = useReducer(eventsReducer, {
     selectedCheckboxes: [],
     checked: false,
+    filteredEvents: [],
   });
-
-  // filter events based on selectedCheckboxes
-  const filterEvents = () => {
-    const eventsArray = allEvents.filter(({ categoryIds }) => {
-      return state.selectedCheckboxes.some((id) => {
-        return categoryIds.includes(id);
-      });
-    });
-    setFilteredEvents(eventsArray);
-  };
 
   return (
     <>
@@ -55,7 +43,6 @@ export const EventsPage = () => {
                   })
                 }
               >
-                {console.log(state.selectedCheckboxes)}
                 <Checkbox.HiddenInput />
                 <Checkbox.Control />
                 <Checkbox.Label>{category.name}</Checkbox.Label>
@@ -64,14 +51,27 @@ export const EventsPage = () => {
           </Fieldset.Content>
         </CheckboxGroup>
       </Fieldset.Root>
-      <Button onClick={filterEvents}></Button>
+      <Button
+        onClick={() =>
+          dispatch({
+            type: "filter_events",
+            payload: allEvents,
+          })
+        }
+      ></Button>
 
       <SimpleGrid columns={[1, 2, 2, 3, 4]} gap="6" p="10" justify="center">
-        {filteredEvents.map((event) => (
-          <Link to={`events/${event.id}`} key={event.id}>
-            <EventCard key={event.id} event={event} />
-          </Link>
-        ))}
+        {state.selectedCheckboxes.length === 0
+          ? allEvents.map((event) => (
+              <Link to={`events/${event.id}`} key={event.id}>
+                <EventCard key={event.id} event={event} />
+              </Link>
+            ))
+          : state.filteredEvents.map((event) => (
+              <Link to={`events/${event.id}`} key={event.id}>
+                <EventCard key={event.id} event={event} />
+              </Link>
+            ))}
       </SimpleGrid>
     </>
   );

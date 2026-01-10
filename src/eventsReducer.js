@@ -12,5 +12,16 @@ export const eventsReducer = (state, action) => {
           : [...state.selectedCheckboxes, action.payload],
       };
     }
+
+    case "filter_events": {
+      return {
+        ...state,
+        filteredEvents: action.payload.filter(({ categoryIds }) => {
+          return state.selectedCheckboxes.some((id) => {
+            return categoryIds.includes(id);
+          });
+        }),
+      };
+    }
   }
 };
