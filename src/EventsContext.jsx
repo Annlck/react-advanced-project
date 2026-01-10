@@ -3,7 +3,6 @@ import { createContext, useState, useEffect } from "react";
 export const EventsContext = createContext({});
 export function EventsProvider({ children }) {
   const [categories, setCategories] = useState([]);
-  const [selectedCheckboxes, setSelectedCheckboxes] = useState([]);
 
   // Get categories
   useEffect(() => {
@@ -28,14 +27,6 @@ export function EventsProvider({ children }) {
     return categoryName;
   };
 
-  // create array of selected categoryIds in checkbox
-  const selectCheckboxes = (e) => {
-    const value = Number(e.target.value);
-    setSelectedCheckboxes((prev) =>
-      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
-    );
-  };
-
   // delete event
   const deleteEvent = async (eventId) => {
     const result = await fetch(`http://localhost:3000/events/${eventId}`, {
@@ -54,9 +45,6 @@ export function EventsProvider({ children }) {
         deleteEvent,
         categories,
         matchCategories,
-        selectCheckboxes,
-        selectedCheckboxes,
-        setSelectedCheckboxes,
       }}
     >
       {children}
