@@ -23,5 +23,30 @@ export const eventsReducer = (state, action) => {
         }),
       };
     }
+
+    case "set_all_events": {
+      return {
+        ...state,
+        allEvents: action.payload,
+      };
+    }
+
+    case "search_input": {
+      return {
+        ...state,
+        searchInput: action.payload,
+      };
+    }
+
+    case "search_events": {
+      return {
+        ...state,
+        searchedEvents: state.allEvents.filter(({ title }) => {
+          return title
+            .toLocaleLowerCase()
+            .includes(state.searchInput.toLocaleLowerCase());
+        }),
+      };
+    }
   }
 };
