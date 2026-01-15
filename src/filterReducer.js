@@ -1,6 +1,6 @@
-export const eventsReducer = (state, action) => {
+export const filterReducer = (state, action) => {
   switch (action.type) {
-    case "checkCategory": {
+    case "check_category": {
       return { ...state, checked: !state.checked };
     }
 

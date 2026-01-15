@@ -1,9 +1,15 @@
-import { SimpleGrid, Link, Center } from "@chakra-ui/react";
+import {
+  SimpleGrid,
+  Link,
+  Center,
+  Checkbox,
+  CheckboxGroup,
+  Fieldset,
+} from "@chakra-ui/react";
 import { useLoaderData } from "react-router-dom";
-import { Checkbox, CheckboxGroup, Fieldset } from "@chakra-ui/react";
 import { useReducer, useContext } from "react";
 import { EventsContext } from "../EventsContext";
-import { eventsReducer } from "../eventsReducer";
+import { filterReducer } from "../filterReducer";
 import { EventCard } from "../components/EventCard";
 import { SearchBar } from "../components/SearchBar";
 
@@ -17,7 +23,7 @@ export const loader = async () => {
 export const EventsPage = () => {
   const { categories } = useContext(EventsContext);
   const { allEvents } = useLoaderData();
-  const [state, dispatch] = useReducer(eventsReducer, {
+  const [state, dispatch] = useReducer(filterReducer, {
     selectedCheckboxes: [],
     checked: false,
     searchInput: "",
@@ -63,7 +69,7 @@ export const EventsPage = () => {
                 key={category.id}
                 value={category.id}
                 name="categoryIds"
-                checked={() => dispatch({ type: "checkCategory" })}
+                checked={() => dispatch({ type: "check_category" })}
                 onChange={() =>
                   dispatch({
                     type: "create_array_of_checked_ids",
