@@ -22,14 +22,19 @@ export const EventsPage = () => {
     checked: false,
     filteredEvents: [],
     searchInput: "",
-    searchedEvents: [],
   });
 
-  const EventsList = ({ events }) => {
+  const EventsList = () => {
+    const eventsMatchingSearch = allEvents.filter(({ title }) => {
+      return title
+        .toLocaleLowerCase()
+        .includes(state.searchInput.toLocaleLowerCase());
+    });
+
     return (
       <>
         <SimpleGrid columns={[1, 2, 2, 3, 4]} gap="6" p="10" justify="center">
-          {events.map((event) => (
+          {eventsMatchingSearch.map((event) => (
             <Link to={`events/${event.id}`} key={event.id}>
               <EventCard key={event.id} event={event} />
             </Link>
@@ -37,13 +42,6 @@ export const EventsPage = () => {
         </SimpleGrid>
       </>
     );
-  };
-
-  const handleSearchBarChange = (input) => {
-    const eventsMatchingSearch = allEvents.filter(({ title }) => {
-      return title.toLocaleLowerCase().includes(input.toLocaleLowerCase());
-    });
-    return eventsMatchingSearch;
   };
 
   // const filterEvents = (events) => {
@@ -91,9 +89,6 @@ export const EventsPage = () => {
           })
         }
       />
-      <Button onClick={(e) => handleSearchBarChange(e.target.value)}>
-        Search
-      </Button>
 
       {/* category filter */}
       <Fieldset.Root>
@@ -132,31 +127,8 @@ export const EventsPage = () => {
         }
       ></Button>
 
-      {/* events
-      <SimpleGrid columns={[1, 2, 2, 3, 4]} gap="6" p="10" justify="center">
-        {state.selectedCheckboxes.length === 0
-          ? allEvents.map((event) => (
-              <Link to={`events/${event.id}`} key={event.id}>
-                <EventCard key={event.id} event={event} />
-              </Link>
-            ))
-          : state.filteredEvents.map((event) => (
-              <Link to={`events/${event.id}`} key={event.id}>
-                <EventCard key={event.id} event={event} />
-              </Link>
-            ))}
-      </SimpleGrid> */}
       {/* events */}
-
-      <EventsList
-        events={handleSearchBarChange(state.searchInput)}
-        // state.selectedCheckboxes.length === 0
-        //   ? allEvents
-        //   : state.filteredEvents
-      />
-      {console.log(state.searchedEvents)}
-      {console.log(state.searchInput)}
+      <EventsList />
     </>
   );
 };
-// };
