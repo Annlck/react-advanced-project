@@ -13,17 +13,6 @@ export const eventsReducer = (state, action) => {
       };
     }
 
-    case "filter_events": {
-      return {
-        ...state,
-        filteredEvents: action.payload.filter(({ categoryIds }) => {
-          return state.selectedCheckboxes.some((id) => {
-            return categoryIds.includes(id);
-          });
-        }),
-      };
-    }
-
     case "search_input": {
       return {
         ...state,

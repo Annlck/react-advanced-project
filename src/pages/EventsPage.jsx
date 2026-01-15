@@ -1,4 +1,4 @@
-import { Button, SimpleGrid, Link } from "@chakra-ui/react";
+import { SimpleGrid, Link, Center } from "@chakra-ui/react";
 import { useLoaderData } from "react-router-dom";
 import { Checkbox, CheckboxGroup, Fieldset } from "@chakra-ui/react";
 import { useReducer, useContext } from "react";
@@ -20,62 +20,23 @@ export const EventsPage = () => {
   const [state, dispatch] = useReducer(eventsReducer, {
     selectedCheckboxes: [],
     checked: false,
-    filteredEvents: [],
     searchInput: "",
   });
 
-  const EventsList = () => {
-    const eventsMatchingSearch = allEvents.filter(({ title }) => {
-      return title
-        .toLocaleLowerCase()
-        .includes(state.searchInput.toLocaleLowerCase());
-    });
+  const eventsMatchingSearch = allEvents.filter(({ title }) => {
+    return title
+      .toLocaleLowerCase()
+      .includes(state.searchInput.toLocaleLowerCase());
+  });
 
-    return (
-      <>
-        <SimpleGrid columns={[1, 2, 2, 3, 4]} gap="6" p="10" justify="center">
-          {eventsMatchingSearch.map((event) => (
-            <Link to={`events/${event.id}`} key={event.id}>
-              <EventCard key={event.id} event={event} />
-            </Link>
-          ))}
-        </SimpleGrid>
-      </>
-    );
-  };
-
-  // const filterEvents = (events) => {
-  //   if (
-  //     state.filteredEvents.length === 0 &&
-  //     state.searchBarInput.length === 0
-  //   ) {
-  //     return events;
-  //   } else if (
-  //     state.filteredEvents.length >= 1 &&
-  //     state.searchBarInput.length >= 1
-  //   ) {
-  //     return events;
-  //   } else if (
-  //     state.filteredEvents.length >= 1 &&
-  //     state.searchBarInput.length === 0
-  //   ) {
-  //     return state.filteredEvents;
-  //   } else if (
-  //     state.filteredEvents.length === 0 &&
-  //     state.searchBarInput.length >= 1
-  //   ) {
-  //     return events.filter((event) => {
-  //       return (
-  //         event.title.toLowerCase().includes(inputValue.toLocaleLowerCase()) ||
-  //         recipe.recipe.healthLabels.some((healthLabel) =>
-  //           healthLabel.toLowerCase().includes(inputValue.toLocaleLowerCase())
-  //         )
-  //       );
-  //     });
-  //   } else {
-  //     return console.log("No events found");
-  //   }
-  // };
+  const filteredEvents =
+    state.selectedCheckboxes.length === 0
+      ? eventsMatchingSearch
+      : eventsMatchingSearch.filter(({ categoryIds }) => {
+          return state.selectedCheckboxes.some((id) => {
+            return categoryIds.includes(id);
+          });
+        });
 
   return (
     <>
@@ -118,17 +79,19 @@ export const EventsPage = () => {
           </Fieldset.Content>
         </CheckboxGroup>
       </Fieldset.Root>
-      <Button
-        onClick={() =>
-          dispatch({
-            type: "filter_events",
-            payload: allEvents,
-          })
-        }
-      ></Button>
 
       {/* events */}
-      <EventsList />
+      {filteredEvents.length === 0 ? (
+        <Center>No events found</Center>
+      ) : (
+        <SimpleGrid columns={[1, 2, 2, 3, 4]} gap="6" p="10" justify="center">
+          {filteredEvents.map((event) => (
+            <Link to={`events/${event.id}`} key={event.id}>
+              <EventCard key={event.id} event={event} />
+            </Link>
+          ))}
+        </SimpleGrid>
+      )}
     </>
   );
 };
