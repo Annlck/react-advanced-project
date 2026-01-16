@@ -1,7 +1,7 @@
 import {
   SimpleGrid,
   Link,
-  Center,
+  AbsoluteCenter,
   Checkbox,
   CheckboxGroup,
   Fieldset,
@@ -43,6 +43,8 @@ export const EventsPage = () => {
             return categoryIds.includes(id);
           });
         });
+
+  console.log(filteredEvents);
 
   return (
     <>
@@ -88,11 +90,11 @@ export const EventsPage = () => {
 
       {/* events */}
       {filteredEvents.length === 0 ? (
-        <Center>No events found</Center>
+        <AbsoluteCenter>No events found</AbsoluteCenter>
       ) : (
         <SimpleGrid columns={[1, 2, 2, 3, 4]} gap="6" p="10" justify="center">
           {filteredEvents.map((event) => (
-            <Link to={`events/${event.id}`} key={event.id}>
+            <Link href={`/events/${event.id}`} key={event.id}>
               <EventCard key={event.id} event={event} />
             </Link>
           ))}
