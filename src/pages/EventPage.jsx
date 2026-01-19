@@ -13,9 +13,9 @@ import {
 import { LuChevronLeft } from "react-icons/lu";
 import { useLoaderData, Link } from "react-router-dom";
 import { useContext } from "react";
-import { getTime } from "../components/Time";
+import { getTime } from "../components/getTime";
 import { EventsContext } from "../EventsContext";
-import EditEvent from "../components/EditEvent";
+import EditEventForm from "../components/EditEventForm";
 import { useState } from "react";
 
 export const loader = async ({ params }) => {
@@ -31,7 +31,7 @@ export const EventPage = () => {
 
   return (
     <>
-      <EditEvent
+      <EditEventForm
         open={modalOpen}
         onClose={() => {
           setModalOpen(false);

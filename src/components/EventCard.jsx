@@ -1,5 +1,5 @@
 import { Card, Image, Text, HStack, Tag, Flex } from "@chakra-ui/react";
-import { getTime } from "./Time";
+import { getTime } from "./getTime";
 import { useContext } from "react";
 import { EventsContext } from "../EventsContext";
 

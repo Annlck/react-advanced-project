@@ -1,5 +1,5 @@
 import { Flex, Link } from "@chakra-ui/react";
-import EventFormDialog from "./EventFormDialog";
+import AddEventForm from "./AddEventForm";
 import { useState } from "react";
 
 export const Navigation = () => {
@@ -7,7 +7,7 @@ export const Navigation = () => {
 
   return (
     <>
-      <EventFormDialog
+      <AddEventForm
         open={modalOpen}
         onClose={() => {
           setModalOpen(false);
