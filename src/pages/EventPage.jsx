@@ -13,7 +13,7 @@ import {
 import { LuChevronLeft } from "react-icons/lu";
 import { useLoaderData, Link } from "react-router-dom";
 import { useContext } from "react";
-import { Time } from "../components/Time";
+import { getTime } from "../components/Time";
 import { EventsContext } from "../EventsContext";
 import EditEvent from "../components/EditEvent";
 import { useState } from "react";
@@ -74,18 +74,11 @@ export const EventPage = () => {
 
             <Separator my={{ base: "4", lg: "6" }} />
             <Text>{event.location}</Text>
+
             <HStack>
-              {event.startTime.length > 5 ? (
-                <Time timestamp={event.startTime} />
-              ) : (
-                <Text> {event.startTime} </Text>
-              )}
+              <Text> {getTime(event.startTime)} </Text>
               <Text> - </Text>
-              {event.endTime.length > 5 ? (
-                <Time timestamp={event.endTime} />
-              ) : (
-                <Text> {event.endTime} </Text>
-              )}
+              <Text> {getTime(event.endTime)} </Text>
             </HStack>
 
             <Flex>

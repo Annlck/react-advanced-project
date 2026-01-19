@@ -16,6 +16,7 @@ import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { EventsContext } from "../EventsContext";
 import { useNavigate } from "react-router-dom";
+import { getTime } from "./Time";
 
 // form dialog
 export default function EditEvent({ eventToEdit, open, onClose, finish }) {
@@ -62,8 +63,8 @@ export default function EditEvent({ eventToEdit, open, onClose, finish }) {
       image: data.image,
       categoryIds: checked,
       location: data.location,
-      startTime: data.startTime,
-      endTime: data.endTime,
+      startTime: getTime(data.startTime),
+      endTime: getTime(data.endTime),
     };
 
     await fetch(`http://localhost:3000/events/${eventToEdit.id}`, {

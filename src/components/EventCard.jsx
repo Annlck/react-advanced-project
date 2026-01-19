@@ -1,5 +1,5 @@
 import { Card, Image, Text, HStack, Tag, Flex } from "@chakra-ui/react";
-import { Time } from "./Time";
+import { getTime } from "./Time";
 import { useContext } from "react";
 import { EventsContext } from "../EventsContext";
 
@@ -22,17 +22,9 @@ export const EventCard = ({ event }) => {
         <Card.Description>{event.description}</Card.Description>
 
         <HStack>
-          {event.startTime.length > 5 ? (
-            <Time timestamp={event.startTime} />
-          ) : (
-            <Text> {event.startTime} </Text>
-          )}
+          <Text> {getTime(event.startTime)} </Text>
           <Text> - </Text>
-          {event.endTime.length > 5 ? (
-            <Time timestamp={event.endTime} />
-          ) : (
-            <Text> {event.endTime} </Text>
-          )}
+          <Text> {getTime(event.endTime)} </Text>
         </HStack>
 
         <Flex>
