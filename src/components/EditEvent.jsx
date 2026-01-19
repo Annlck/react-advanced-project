@@ -21,14 +21,30 @@ import { useNavigate } from "react-router-dom";
 export default function EditEvent({ eventToEdit, open, onClose, finish }) {
   const { categories } = useContext(EventsContext);
 
+  // maybe add function, if field empty or field not changed => dont push to backend?
+  // dirtyFields of useForm?
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      title: eventToEdit.title,
+      description: eventToEdit.description,
+      image: eventToEdit.image,
+      categoryIds: eventToEdit.categoryIds,
+      location: eventToEdit.location,
+      startTime: eventToEdit.startTime,
+      endTime: eventToEdit.endTime,
+    },
+  });
 
   // handleChange checkboxes
   const [checked, setChecked] = useState(eventToEdit.categoryIds);
+  console.log(eventToEdit.categoryIds);
+  console.log(checked);
+
   const handleChange = (e) => {
     const value = Number(e.target.value);
     setChecked((prev) =>
@@ -44,7 +60,7 @@ export default function EditEvent({ eventToEdit, open, onClose, finish }) {
       title: data.title,
       description: data.description,
       image: data.image,
-      // categoryIds: checked,
+      categoryIds: checked,
       location: data.location,
       startTime: data.startTime,
       endTime: data.endTime,
@@ -74,7 +90,10 @@ export default function EditEvent({ eventToEdit, open, onClose, finish }) {
                 <Input
                   type="text"
                   placeholder={eventToEdit.title}
-                  {...register("title", { required: "Title is required" })}
+                  {...register(
+                    "title"
+                    // , { required: "Title is required" }
+                  )}
                 />
                 <Field.ErrorText>{errors.title?.message}</Field.ErrorText>
               </Field.Root>
@@ -84,9 +103,10 @@ export default function EditEvent({ eventToEdit, open, onClose, finish }) {
                 <Field.Label>Description</Field.Label>
                 <Textarea
                   placeholder={eventToEdit.description}
-                  {...register("description", {
-                    required: "Description is required",
-                  })}
+                  {...register(
+                    "description"
+                    // , { required: "Description is required" }
+                  )}
                 />
                 <Field.ErrorText>{errors.location?.message}</Field.ErrorText>
               </Field.Root>
@@ -97,9 +117,10 @@ export default function EditEvent({ eventToEdit, open, onClose, finish }) {
                 <Input
                   type="location"
                   placeholder={eventToEdit.location}
-                  {...register("location", {
-                    required: "Location is required",
-                  })}
+                  {...register(
+                    "location"
+                    // , { required: "Location is required"}
+                  )}
                 />
                 <Field.ErrorText>{errors.location?.message}</Field.ErrorText>
               </Field.Root>
@@ -110,10 +131,10 @@ export default function EditEvent({ eventToEdit, open, onClose, finish }) {
                   <Field.Label>Start time</Field.Label>
                   <Input
                     type="time"
-                    placeholder={eventToEdit.startTime}
-                    {...register("startTime", {
-                      required: "Start time is required",
-                    })}
+                    {...register(
+                      "startTime"
+                      // , { required: "Start time is required" }
+                    )}
                   />
                   <Field.ErrorText>{errors.startTime?.message}</Field.ErrorText>
                 </Field.Root>
@@ -123,10 +144,10 @@ export default function EditEvent({ eventToEdit, open, onClose, finish }) {
                   <Field.Label>End time</Field.Label>
                   <Input
                     type="time"
-                    placeholder={eventToEdit.endTime}
-                    {...register("endTime", {
-                      required: "End time is required",
-                    })}
+                    {...register(
+                      "endTime"
+                      // , { required: "End time is required" }
+                    )}
                   />
                   <Field.ErrorText>{errors.endTime?.message}</Field.ErrorText>
                 </Field.Root>
