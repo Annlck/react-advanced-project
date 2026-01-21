@@ -13,11 +13,11 @@ import {
 import { LuChevronLeft } from "react-icons/lu";
 import { useLoaderData, Link } from "react-router-dom";
 import { useContext, useState } from "react";
-import { getTime } from "../components/getTime";
 import { EventsContext } from "../EventsContext";
+import { getTime } from "../components/getTime";
+import { Toaster } from "../components/ui/toaster";
+import { DeleteEventDialog } from "../components/DeleteEventDialog";
 import EditEventForm from "../components/EditEventForm";
-import { Toaster, toaster } from "../components/ui/toaster";
-import { useNavigate } from "react-router-dom";
 
 export const loader = async ({ params }) => {
   const event = await fetch(`http://localhost:3000/events/${params.eventId}`);
@@ -28,50 +28,11 @@ export const EventPage = () => {
   scrollTo(top);
   const { event } = useLoaderData();
   const { matchCategories } = useContext(EventsContext);
-  const [modalOpen, setModalOpen] = useState(false);
-
-  // set up useNaviage hook
-  const navigate = useNavigate();
-
-  // delete event
-  const deleteEvent = async (eventId) => {
-    const result = await fetch(`http://localhost:3000/events/${eventId}`, {
-      method: "DELETE",
-    });
-
-    if (result.ok) {
-      toaster.create({
-        title: "Success",
-        description: "Event has been deleted",
-        type: "success",
-      });
-      navigate("/");
-      return;
-    } else {
-      toaster.create({
-        title: "Error",
-        description: "Could not delete event",
-        type: "error",
-      });
-      return;
-    }
-  };
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
 
   return (
     <>
-      <EditEventForm
-        open={modalOpen}
-        onClose={() => {
-          setModalOpen(false);
-        }}
-        finish={() => {
-          setModalOpen(false);
-        }}
-        eventToEdit={event}
-      />
-
-      <Toaster />
-
       <Center>
         <Box
           w={{ md: "80vw" }}
@@ -119,10 +80,38 @@ export const EventPage = () => {
               ))}
             </Flex>
 
-            <Button onClick={() => deleteEvent(event.id)}>Delete Event</Button>
+            <EditEventForm
+              open={editModalOpen}
+              onClose={() => {
+                setEditModalOpen(false);
+              }}
+              finish={() => {
+                setEditModalOpen(false);
+              }}
+              eventToEdit={event}
+            />
+
+            <DeleteEventDialog
+              open={deleteModalOpen}
+              onClose={() => {
+                setDeleteModalOpen(false);
+              }}
+              finish={() => {
+                setDeleteModalOpen(false);
+              }}
+              eventToDelete={event}
+            />
+
             <Button
               onClick={() => {
-                setModalOpen(true);
+                setDeleteModalOpen(true);
+              }}
+            >
+              Delete Event
+            </Button>
+            <Button
+              onClick={() => {
+                setEditModalOpen(true);
               }}
             >
               Edit Event
@@ -130,6 +119,8 @@ export const EventPage = () => {
           </Box>
         </Box>
       </Center>
+
+      <Toaster />
     </>
   );
 };
