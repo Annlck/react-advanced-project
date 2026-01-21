@@ -66,11 +66,6 @@ export const EventPage = () => {
         }}
         finish={() => {
           setModalOpen(false);
-          toaster.create({
-            title: "Success",
-            description: "Your event has been edited",
-            type: "success",
-          });
         }}
         eventToEdit={event}
       />

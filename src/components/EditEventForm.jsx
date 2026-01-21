@@ -17,6 +17,7 @@ import { useForm } from "react-hook-form";
 import { EventsContext } from "../EventsContext";
 import { useNavigate } from "react-router-dom";
 import { getTime } from "./getTime";
+import { toaster } from "./ui/toaster";
 
 // form dialog
 export default function EditEventForm({ eventToEdit, open, onClose, finish }) {
@@ -24,6 +25,8 @@ export default function EditEventForm({ eventToEdit, open, onClose, finish }) {
 
   // maybe add function, if field empty or field not changed => dont push to backend?
   // dirtyFields of useForm?
+
+  // require at least 1 checkbox to be selected
 
   const {
     register,
@@ -47,7 +50,7 @@ export default function EditEventForm({ eventToEdit, open, onClose, finish }) {
   const handleChange = (e) => {
     const value = Number(e.target.value);
     setChecked((prev) =>
-      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
+      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value],
     );
   };
   // set up useNaviage hook
@@ -65,14 +68,33 @@ export default function EditEventForm({ eventToEdit, open, onClose, finish }) {
       endTime: data.endTime,
     };
 
-    await fetch(`http://localhost:3000/events/${eventToEdit.id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(editedEvent),
-    });
+    const result = await fetch(
+      `http://localhost:3000/events/${eventToEdit.id}`,
+      {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(editedEvent),
+      },
+    );
 
-    navigate(`/events/${eventToEdit.id}`);
     finish();
+
+    if (result.ok) {
+      toaster.create({
+        title: "Success",
+        description: "Event has been edited",
+        type: "success",
+      });
+      navigate(`/events/${eventToEdit.id}`);
+      return;
+    } else {
+      toaster.create({
+        title: "Error",
+        description: "Could not edit event",
+        type: "error",
+      });
+      return;
+    }
   };
 
   return (
@@ -90,7 +112,7 @@ export default function EditEventForm({ eventToEdit, open, onClose, finish }) {
                   type="text"
                   placeholder={eventToEdit.title}
                   {...register(
-                    "title"
+                    "title",
                     // , { required: "Title is required" }
                   )}
                 />
@@ -103,7 +125,7 @@ export default function EditEventForm({ eventToEdit, open, onClose, finish }) {
                 <Textarea
                   placeholder={eventToEdit.description}
                   {...register(
-                    "description"
+                    "description",
                     // , { required: "Description is required" }
                   )}
                 />
@@ -117,7 +139,7 @@ export default function EditEventForm({ eventToEdit, open, onClose, finish }) {
                   type="location"
                   placeholder={eventToEdit.location}
                   {...register(
-                    "location"
+                    "location",
                     // , { required: "Location is required"}
                   )}
                 />
@@ -131,7 +153,7 @@ export default function EditEventForm({ eventToEdit, open, onClose, finish }) {
                   <Input
                     type="time"
                     {...register(
-                      "startTime"
+                      "startTime",
                       // , { required: "Start time is required" }
                     )}
                   />
@@ -144,7 +166,7 @@ export default function EditEventForm({ eventToEdit, open, onClose, finish }) {
                   <Input
                     type="time"
                     {...register(
-                      "endTime"
+                      "endTime",
                       // , { required: "End time is required" }
                     )}
                   />

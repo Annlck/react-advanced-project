@@ -18,6 +18,9 @@ import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import { EventsContext } from "../EventsContext";
 import { useNavigate } from "react-router-dom";
+import { toaster } from "./ui/toaster";
+
+// require at least 1 checkbox to be selected
 
 // image upload
 const FileUploadList = () => {
@@ -73,14 +76,30 @@ export default function AddEventForm({ open, onClose, finish }) {
       endTime: data.endTime,
     };
 
-    await fetch("http://localhost:3000/events", {
+    const result = await fetch("http://localhost:3000/events", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newEvent),
     });
 
-    navigate(`/events/${newEvent.id}`);
     finish();
+
+    if (result.ok) {
+      toaster.create({
+        title: "Success",
+        description: "Event has been added",
+        type: "success",
+      });
+      navigate(`/events/${newEvent.id}`);
+      return;
+    } else {
+      toaster.create({
+        title: "Error",
+        description: "Could not add event",
+        type: "error",
+      });
+      return;
+    }
   };
 
   // handleChange checkboxes
@@ -88,7 +107,7 @@ export default function AddEventForm({ open, onClose, finish }) {
   const handleChange = (e) => {
     const value = Number(e.target.value);
     setChecked((prev) =>
-      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
+      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value],
     );
   };
 

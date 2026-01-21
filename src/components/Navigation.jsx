@@ -1,7 +1,7 @@
 import { Flex, Link } from "@chakra-ui/react";
 import AddEventForm from "./AddEventForm";
 import { useState } from "react";
-import { Toaster, toaster } from "./ui/toaster";
+import { Toaster } from "./ui/toaster";
 
 export const Navigation = () => {
   const [modalOpen, setModalOpen] = useState(false);
@@ -15,11 +15,6 @@ export const Navigation = () => {
         }}
         finish={() => {
           setModalOpen(false);
-          toaster.create({
-            title: "Success",
-            description: "Your event has been added",
-            type: "success",
-          });
         }}
       />
       <Toaster />
