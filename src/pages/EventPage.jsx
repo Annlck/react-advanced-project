@@ -17,6 +17,7 @@ import { getTime } from "../components/getTime";
 import { EventsContext } from "../EventsContext";
 import EditEventForm from "../components/EditEventForm";
 import { Toaster, toaster } from "../components/ui/toaster";
+import { useNavigate } from "react-router-dom";
 
 export const loader = async ({ params }) => {
   const event = await fetch(`http://localhost:3000/events/${params.eventId}`);
@@ -26,8 +27,35 @@ export const loader = async ({ params }) => {
 export const EventPage = () => {
   scrollTo(top);
   const { event } = useLoaderData();
-  const { deleteEvent, matchCategories } = useContext(EventsContext);
+  const { matchCategories } = useContext(EventsContext);
   const [modalOpen, setModalOpen] = useState(false);
+
+  // set up useNaviage hook
+  const navigate = useNavigate();
+
+  // delete event
+  const deleteEvent = async (eventId) => {
+    const result = await fetch(`http://localhost:3000/events/${eventId}`, {
+      method: "DELETE",
+    });
+
+    if (result.ok) {
+      toaster.create({
+        title: "Success",
+        description: "Event has been deleted",
+        type: "success",
+      });
+      navigate("/");
+      return;
+    } else {
+      toaster.create({
+        title: "Error",
+        description: "Could not delete event",
+        type: "error",
+      });
+      return;
+    }
+  };
 
   return (
     <>
