@@ -1,4 +1,5 @@
 import { createContext, useState, useEffect } from "react";
+import { toaster } from "./components/ui/toaster";
 
 export const EventsContext = createContext({});
 export function EventsProvider({ children }) {
@@ -33,8 +34,19 @@ export function EventsProvider({ children }) {
       method: "DELETE",
     });
 
-    if (!result.ok) {
-      console.error("could not delete event");
+    if (result.ok) {
+      toaster.create({
+        title: "Success",
+        description: "Event has been deleted",
+        type: "success",
+      });
+      return;
+    } else {
+      toaster.create({
+        title: "Error",
+        description: "Could not delete event",
+        type: "error",
+      });
       return;
     }
   };

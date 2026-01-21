@@ -44,8 +44,6 @@ export const EventsPage = () => {
           });
         });
 
-  console.log(filteredEvents);
-
   return (
     <>
       {/* search bar */}

@@ -12,11 +12,11 @@ import {
 } from "@chakra-ui/react";
 import { LuChevronLeft } from "react-icons/lu";
 import { useLoaderData, Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { getTime } from "../components/getTime";
 import { EventsContext } from "../EventsContext";
 import EditEventForm from "../components/EditEventForm";
-import { useState } from "react";
+import { Toaster, toaster } from "../components/ui/toaster";
 
 export const loader = async ({ params }) => {
   const event = await fetch(`http://localhost:3000/events/${params.eventId}`);
@@ -38,9 +38,16 @@ export const EventPage = () => {
         }}
         finish={() => {
           setModalOpen(false);
+          toaster.create({
+            title: "Success",
+            description: "Your event has been edited",
+            type: "success",
+          });
         }}
         eventToEdit={event}
       />
+
+      <Toaster />
 
       <Center>
         <Box
