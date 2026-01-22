@@ -17,7 +17,6 @@ export const Navigation = () => {
           setModalOpen(false);
         }}
       />
-      <Toaster />
       <nav>
         <Flex
           position="sticky"
@@ -27,6 +26,7 @@ export const Navigation = () => {
           paddingX={{ base: "6", md: "12" }}
           paddingY="2"
           gap="8"
+          justify={{ base: "space-between", md: "flex-start" }}
         >
           {/* events page */}
           <Link href="/">Events</Link>
@@ -44,6 +44,7 @@ export const Navigation = () => {
           <Link href="/contact">Contact us</Link>
         </Flex>
       </nav>
+      <Toaster />
     </>
   );
 };
