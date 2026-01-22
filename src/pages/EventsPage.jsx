@@ -25,7 +25,6 @@ export const EventsPage = () => {
   const { allEvents } = useLoaderData();
   const [state, dispatch] = useReducer(filterReducer, {
     selectedCheckboxes: [],
-    checked: false,
     searchInput: "",
   });
 
@@ -69,7 +68,7 @@ export const EventsPage = () => {
                 key={category.id}
                 value={category.id}
                 name="categoryIds"
-                checked={() => dispatch({ type: "check_category" })}
+                checked={state.selectedCheckboxes.includes(category.id)}
                 onChange={() =>
                   dispatch({
                     type: "create_array_of_checked_ids",

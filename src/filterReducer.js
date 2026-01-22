@@ -1,9 +1,5 @@
 export const filterReducer = (state, action) => {
   switch (action.type) {
-    case "check_category": {
-      return { ...state, checked: !state.checked };
-    }
-
     case "create_array_of_checked_ids": {
       return {
         ...state,
