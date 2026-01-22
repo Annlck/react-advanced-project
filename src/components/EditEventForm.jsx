@@ -187,7 +187,8 @@ export default function EditEventForm({ eventToEdit, open, onClose, finish }) {
                           key={category.id}
                           value={category.id}
                           name="categoryIds"
-                          checked={checked.includes(category.value)}
+                          // checked doesnt work
+                          checked={checked.includes(category.id)}
                           onChange={(e) => handleChange(e)}
                         >
                           <Checkbox.HiddenInput />

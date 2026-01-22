@@ -68,6 +68,7 @@ export const EventsPage = () => {
                 key={category.id}
                 value={category.id}
                 name="categoryIds"
+                // checked doesnt work
                 checked={state.selectedCheckboxes.includes(category.id)}
                 onChange={() =>
                   dispatch({
