@@ -8,15 +8,6 @@ export const Navigation = () => {
 
   return (
     <>
-      <AddEventForm
-        open={modalOpen}
-        onClose={() => {
-          setModalOpen(false);
-        }}
-        finish={() => {
-          setModalOpen(false);
-        }}
-      />
       <nav>
         <Flex
           position="sticky"
@@ -44,6 +35,16 @@ export const Navigation = () => {
           <Link href="/contact">Contact us</Link>
         </Flex>
       </nav>
+
+      <AddEventForm
+        open={modalOpen}
+        onClose={() => {
+          setModalOpen(false);
+        }}
+        finish={() => {
+          setModalOpen(false);
+        }}
+      />
       <Toaster />
     </>
   );

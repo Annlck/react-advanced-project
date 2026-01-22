@@ -1,6 +1,5 @@
 import {
   SimpleGrid,
-  Link,
   AbsoluteCenter,
   Checkbox,
   CheckboxGroup,
@@ -92,9 +91,7 @@ export const EventsPage = () => {
       ) : (
         <SimpleGrid columns={[1, 2, 2, 3, 4]} gap="6" p="10" justify="center">
           {filteredEvents.map((event) => (
-            <Link href={`/events/${event.id}`} key={event.id}>
-              <EventCard key={event.id} event={event} />
-            </Link>
+            <EventCard key={event.id} event={event} />
           ))}
         </SimpleGrid>
       )}

@@ -20,8 +20,10 @@ import { DeleteEventDialog } from "../components/DeleteEventDialog";
 import EditEventForm from "../components/EditEventForm";
 
 export const loader = async ({ params }) => {
-  const event = await fetch(`http://localhost:3000/events/${params.eventId}`);
-  return { event: await event.json() };
+  const eventResponse = await fetch(
+    `http://localhost:3000/events/${params.eventId}`,
+  );
+  return { event: await eventResponse.json() };
 };
 
 export const EventPage = () => {
