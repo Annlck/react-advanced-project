@@ -10,6 +10,7 @@ import {
   HStack,
   Tag,
   Card,
+  Icon,
 } from "@chakra-ui/react";
 import {
   LuChevronLeft,
@@ -78,15 +79,21 @@ export const EventPage = () => {
               <Card.Description>{event.description}</Card.Description>
 
               <Separator my={{ base: "4", lg: "6" }} />
-              <HStack>
-                <LuMapPin />
-                <Text>{event.location}</Text>
-              </HStack>
-              <HStack>
-                <LuClock />
+
+              <HStack mb="2">
+                <Icon size="sm">
+                  <LuClock />
+                </Icon>
                 <Text> {getTime(event.startTime)} </Text>
                 <Text> - </Text>
                 <Text> {getTime(event.endTime)} </Text>
+              </HStack>
+
+              <HStack>
+                <Icon size="sm">
+                  <LuMapPin />
+                </Icon>
+                <Text>{event.location}</Text>
               </HStack>
 
               <HStack mt="4">

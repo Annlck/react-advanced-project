@@ -12,7 +12,7 @@ export const EventCard = ({ event }) => {
     <Card.Root
       maxW="sm"
       overflow="hidden"
-      // shadow="2xl"
+      shadow="lg"
       cursor="pointer"
       _hover={{ transform: "scale(1.02)" }}
       transition="transform 0.15s ease"
