@@ -14,12 +14,15 @@ export const Navigation = () => {
           position="sticky"
           top={0}
           zIndex="sticky"
-          background="#073855ff"
-          paddingX={{ base: "6", md: "12" }}
+          bgColor="blue.800"
+          paddingX={{ base: "2", sm: "10" }}
           paddingY="2"
-          justify="space-between"
+          justify={{ base: "space-evenly", sm: "space-between" }}
         >
-          <HStack justify={{ base: "space-between", sm: "flex-start" }} gap="8">
+          <HStack
+            justify={{ base: "space-between", sm: "flex-start" }}
+            gap={{ base: "6", sm: "10" }}
+          >
             {/* events page */}
             <Link color="white" href="/">
               Events

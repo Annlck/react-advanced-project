@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button, Text } from "@chakra-ui/react";
+import { IconButton } from "@chakra-ui/react";
 import { useTheme } from "next-themes";
 import { LuMoon, LuSun } from "react-icons/lu";
 
@@ -19,14 +19,14 @@ export function ColorModeToggle() {
   };
 
   return (
-    <Button
+    <IconButton
       size={{ base: "xs", md: "sm" }}
       onClick={() => (isActive("light") ? setTheme("dark") : setTheme("light"))}
+      colorPalette="blue"
+      variant="ghost"
+      color="white"
     >
       {isActive("light") ? <LuMoon /> : <LuSun />}
-      <Text hideBelow="md">
-        {isActive("light") ? "Dark mode" : "Light mode"}
-      </Text>
-    </Button>
+    </IconButton>
   );
 }
