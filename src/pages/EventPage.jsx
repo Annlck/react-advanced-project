@@ -1,17 +1,24 @@
 import {
   Box,
-  Heading,
   Button,
+  ButtonGroup,
+  IconButton,
   Image,
   Center,
   Text,
   Separator,
   HStack,
-  Flex,
   Tag,
+  Card,
 } from "@chakra-ui/react";
-import { LuChevronLeft } from "react-icons/lu";
-import { useLoaderData, Link } from "react-router-dom";
+import {
+  LuChevronLeft,
+  LuTrash2,
+  LuPencil,
+  LuMapPin,
+  LuClock,
+} from "react-icons/lu";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { EventsContext } from "../EventsContext";
 import { getTime } from "../components/getTime";
@@ -32,10 +39,89 @@ export const EventPage = () => {
   const { matchCategories } = useContext(EventsContext);
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <>
       <Center>
+        <Card.Root
+          flexDirection={{ base: "column", md: "row" }}
+          overflow="hidden"
+          maxWidth="90vw"
+          m={{ base: "4", md: "10" }}
+        >
+          <IconButton
+            aria-label="Back to overview"
+            position="absolute"
+            top="10px"
+            left="10px"
+            variant="surface"
+            size={{ base: "xs", md: "sm" }}
+            onClick={() => navigate("/")}
+          >
+            <LuChevronLeft />
+          </IconButton>
+
+          <Image
+            objectFit="cover"
+            baseToMd={{ height: "12rem" }}
+            md={{ maxW: "250px" }}
+            src={event.image}
+            alt="Event Image"
+          />
+          <Box>
+            <Card.Body>
+              <Card.Title mb="2">{event.title}</Card.Title>
+              <Card.Description>{event.description}</Card.Description>
+
+              <Separator my={{ base: "4", lg: "6" }} />
+              <HStack>
+                <LuMapPin />
+                <Text>{event.location}</Text>
+              </HStack>
+              <HStack>
+                <LuClock />
+                <Text> {getTime(event.startTime)} </Text>
+                <Text> - </Text>
+                <Text> {getTime(event.endTime)} </Text>
+              </HStack>
+
+              <HStack mt="4">
+                {event.categoryIds.map((id) => (
+                  <Tag.Root key={id} size="lg" mr="1" my="1">
+                    <Tag.Label>{matchCategories(id)}</Tag.Label>
+                  </Tag.Root>
+                ))}
+              </HStack>
+            </Card.Body>
+
+            <Card.Footer>
+              <ButtonGroup size="sm" variant="subtle">
+                <Button
+                  colorPalette="blue"
+                  onClick={() => {
+                    setEditModalOpen(true);
+                  }}
+                >
+                  <LuPencil />
+                  Edit
+                </Button>
+                <Button
+                  colorPalette="red"
+                  onClick={() => {
+                    setDeleteModalOpen(true);
+                  }}
+                >
+                  <LuTrash2 />
+                  Delete
+                </Button>
+              </ButtonGroup>
+            </Card.Footer>
+          </Box>
+        </Card.Root>
+      </Center>
+
+      {/* <Center>
         <Box
           w={{ md: "80vw" }}
           borderWidth="1px"
@@ -120,7 +206,29 @@ export const EventPage = () => {
             </Button>
           </Box>
         </Box>
-      </Center>
+      </Center> */}
+
+      <EditEventForm
+        open={editModalOpen}
+        onClose={() => {
+          setEditModalOpen(false);
+        }}
+        finish={() => {
+          setEditModalOpen(false);
+        }}
+        eventToEdit={event}
+      />
+
+      <DeleteEventDialog
+        open={deleteModalOpen}
+        onClose={() => {
+          setDeleteModalOpen(false);
+        }}
+        finish={() => {
+          setDeleteModalOpen(false);
+        }}
+        eventToDelete={event}
+      />
 
       <Toaster />
     </>

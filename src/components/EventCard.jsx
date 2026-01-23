@@ -32,7 +32,7 @@ export const EventCard = ({ event }) => {
 
         <Flex>
           {event.categoryIds.map((id) => (
-            <Tag.Root key={id} size="lg" mr="1" my="1" colorPalette="teal">
+            <Tag.Root key={id} size="lg" mr="1" my="1" colorPalette="blue">
               <Tag.Label>{matchCategories(id)}</Tag.Label>
             </Tag.Root>
           ))}
