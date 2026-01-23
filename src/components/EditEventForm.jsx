@@ -14,8 +14,8 @@ import {
 } from "@chakra-ui/react";
 import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
-import { EventsContext } from "../EventsContext";
 import { useNavigate } from "react-router-dom";
+import { EventsContext } from "../EventsContext";
 import { getTime } from "./getTime";
 import { toaster } from "./ui/toaster";
 

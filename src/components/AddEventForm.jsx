@@ -11,13 +11,15 @@ import {
   CheckboxGroup,
   Fieldset,
   Text,
+  FileUpload,
+  Float,
+  useFileUploadContext,
 } from "@chakra-ui/react";
-import { FileUpload, Float, useFileUploadContext } from "@chakra-ui/react";
-import { LuFileImage, LuX } from "react-icons/lu";
 import { useState, useContext } from "react";
-import { useForm } from "react-hook-form";
-import { EventsContext } from "../EventsContext";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { LuFileImage, LuX } from "react-icons/lu";
+import { EventsContext } from "../EventsContext";
 import { toaster } from "./ui/toaster";
 
 // require at least 1 checkbox to be selected

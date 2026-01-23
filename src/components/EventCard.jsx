@@ -1,8 +1,8 @@
 import { Card, Image, Text, HStack, Tag } from "@chakra-ui/react";
 import { useNavigate } from "react-router";
-import { getTime } from "./getTime";
 import { useContext } from "react";
 import { EventsContext } from "../EventsContext";
+import { getTime } from "./getTime";
 
 export const EventCard = ({ event }) => {
   const { matchCategories } = useContext(EventsContext);

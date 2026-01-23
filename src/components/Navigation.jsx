@@ -1,6 +1,6 @@
 import { Flex, Link, HStack } from "@chakra-ui/react";
-import AddEventForm from "./AddEventForm";
 import { useState } from "react";
+import AddEventForm from "./AddEventForm";
 import { Toaster } from "./ui/toaster";
 import { ColorModeToggle } from "./ColorModeToggle";
 
