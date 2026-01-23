@@ -79,7 +79,11 @@ export const EventsPage = () => {
       {filteredEvents.length === 0 ? (
         <AbsoluteCenter>No events found</AbsoluteCenter>
       ) : (
-        <SimpleGrid gap={4} minChildWidth="200px" mx="10">
+        <SimpleGrid
+          gap={4}
+          minChildWidth={{ base: "200px", md: "300px" }}
+          mx="10"
+        >
           {filteredEvents.map((event) => (
             <EventCard key={event.id} event={event} />
           ))}

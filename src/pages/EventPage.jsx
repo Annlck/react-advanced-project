@@ -71,7 +71,7 @@ export const EventPage = () => {
             src={event.image}
             alt="Event Image"
           />
-          <Box m="6">
+          <Box m="6" minWidth={{ md: "400px" }}>
             <Card.Body>
               <Card.Title mb="2" fontSize="xl">
                 {event.title}
