@@ -6,6 +6,7 @@ import { filterReducer } from "../filterReducer";
 import { EventCard } from "../components/EventCard";
 import { SearchBar } from "../components/SearchBar";
 import { FilterMenu } from "../components/FilterMenu";
+import EventCardSkeleton from "../components/EventCardSkeleton";
 
 export const loader = async () => {
   const eventsResponse = await fetch("http://localhost:3000/events");
@@ -36,6 +37,28 @@ export const EventsPage = () => {
             return categoryIds.includes(id);
           });
         });
+
+  // const Component = () => {
+  //   if (loading) {
+  //     return Array.from({ length: 12 }).map((_, i) => (
+  //       <EventCardSkeleton key={i} />
+  //     ));
+  //   } else if (filteredEvents.length === 0) {
+  //     return <AbsoluteCenter>No events found</AbsoluteCenter>;
+  //   } else {
+  //     return (
+  //       <SimpleGrid
+  //         gap={4}
+  //         minChildWidth={{ base: "200px", md: "300px" }}
+  //         mx="10"
+  //       >
+  //         {filteredEvents.map((event) => (
+  //           <EventCard key={event.id} event={event} />
+  //         ))}
+  //       </SimpleGrid>
+  //     );
+  //   }
+  // };
 
   return (
     <>
@@ -86,6 +109,10 @@ export const EventsPage = () => {
         >
           {filteredEvents.map((event) => (
             <EventCard key={event.id} event={event} />
+          ))}
+
+          {Array.from({ length: 12 }).map((_, i) => (
+            <EventCardSkeleton key={i} />
           ))}
         </SimpleGrid>
       )}
