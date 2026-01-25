@@ -1,3 +1,6 @@
+// require at least 1 checkbox to be selected
+// doesn't show checked checkboxes properly. Functionality works, but checks don't show on form
+
 "use client";
 import {
   Button,
@@ -22,11 +25,6 @@ import { toaster } from "./ui/toaster";
 // form dialog
 export default function EditEventForm({ eventToEdit, open, onClose, finish }) {
   const { categories } = useContext(EventsContext);
-
-  // maybe add function, if field empty or field not changed => dont push to backend?
-  // dirtyFields of useForm?
-
-  // require at least 1 checkbox to be selected
 
   const {
     register,
@@ -111,10 +109,7 @@ export default function EditEventForm({ eventToEdit, open, onClose, finish }) {
                 <Input
                   type="text"
                   placeholder={eventToEdit.title}
-                  {...register(
-                    "title",
-                    // , { required: "Title is required" }
-                  )}
+                  {...register("title", { required: "Title is required" })}
                 />
                 <Field.ErrorText>{errors.title?.message}</Field.ErrorText>
               </Field.Root>
@@ -124,12 +119,11 @@ export default function EditEventForm({ eventToEdit, open, onClose, finish }) {
                 <Field.Label>Description</Field.Label>
                 <Textarea
                   placeholder={eventToEdit.description}
-                  {...register(
-                    "description",
-                    // , { required: "Description is required" }
-                  )}
+                  {...register("description", {
+                    required: "Description is required",
+                  })}
                 />
-                <Field.ErrorText>{errors.location?.message}</Field.ErrorText>
+                <Field.ErrorText>{errors.description?.message}</Field.ErrorText>
               </Field.Root>
 
               {/* event location */}
@@ -138,10 +132,9 @@ export default function EditEventForm({ eventToEdit, open, onClose, finish }) {
                 <Input
                   type="location"
                   placeholder={eventToEdit.location}
-                  {...register(
-                    "location",
-                    // , { required: "Location is required"}
-                  )}
+                  {...register("location", {
+                    required: "Location is required",
+                  })}
                 />
                 <Field.ErrorText>{errors.location?.message}</Field.ErrorText>
               </Field.Root>
@@ -152,10 +145,9 @@ export default function EditEventForm({ eventToEdit, open, onClose, finish }) {
                   <Field.Label>Start time</Field.Label>
                   <Input
                     type="time"
-                    {...register(
-                      "startTime",
-                      // , { required: "Start time is required" }
-                    )}
+                    {...register("startTime", {
+                      required: "Start time is required",
+                    })}
                   />
                   <Field.ErrorText>{errors.startTime?.message}</Field.ErrorText>
                 </Field.Root>
@@ -165,10 +157,9 @@ export default function EditEventForm({ eventToEdit, open, onClose, finish }) {
                   <Field.Label>End time</Field.Label>
                   <Input
                     type="time"
-                    {...register(
-                      "endTime",
-                      // , { required: "End time is required" }
-                    )}
+                    {...register("endTime", {
+                      required: "End time is required",
+                    })}
                   />
                   <Field.ErrorText>{errors.endTime?.message}</Field.ErrorText>
                 </Field.Root>
@@ -176,7 +167,7 @@ export default function EditEventForm({ eventToEdit, open, onClose, finish }) {
 
               <HStack gap="10" width="full" mt="4">
                 {/* event categories */}
-                <Fieldset.Root>
+                <Fieldset.Root invalid={errors.categoryIds}>
                   <CheckboxGroup name="categories">
                     <Fieldset.Legend fontSize="sm" mb="2">
                       Select categories
@@ -198,6 +189,9 @@ export default function EditEventForm({ eventToEdit, open, onClose, finish }) {
                       ))}
                     </Fieldset.Content>
                   </CheckboxGroup>
+                  <Fieldset.ErrorText>
+                    {errors.categoryIds?.message}
+                  </Fieldset.ErrorText>
                 </Fieldset.Root>
               </HStack>
             </Dialog.Body>

@@ -1,3 +1,6 @@
+// require at least 1 checkbox to be selected
+// how to get image uploaded
+
 "use client";
 import {
   Button,
@@ -21,8 +24,6 @@ import { useForm } from "react-hook-form";
 import { LuFileImage, LuX } from "react-icons/lu";
 import { EventsContext } from "../EventsContext";
 import { toaster } from "./ui/toaster";
-
-// require at least 1 checkbox to be selected
 
 // image upload
 const FileUploadList = () => {
@@ -185,7 +186,7 @@ export default function AddEventForm({ open, onClose, finish }) {
 
               <HStack gap="10" width="full" mt="4">
                 {/* event categories */}
-                <Fieldset.Root>
+                <Fieldset.Root invalid={errors.categoryIds}>
                   <CheckboxGroup name="categories">
                     <Fieldset.Legend fontSize="sm" mb="2">
                       Select categories
@@ -206,6 +207,9 @@ export default function AddEventForm({ open, onClose, finish }) {
                       ))}
                     </Fieldset.Content>
                   </CheckboxGroup>
+                  <Fieldset.ErrorText>
+                    {errors.categoryIds?.message}
+                  </Fieldset.ErrorText>
                 </Fieldset.Root>
 
                 {/* event image */}

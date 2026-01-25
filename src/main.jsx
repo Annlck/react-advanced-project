@@ -21,12 +21,10 @@ const router = createBrowserRouter([
         path: "/events/:eventId",
         element: <EventPage />,
         loader: EventLoader,
-        // action: editEvent,
       },
       {
         path: "/contact",
         element: <Contact />,
-        // loader: contactLoader,
       },
     ],
   },

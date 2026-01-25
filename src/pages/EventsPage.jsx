@@ -1,3 +1,10 @@
+// doesn't show checked checkboxes properly when filtering. Functionality works, but checks don't show on form
+// (works the 1st time you filter, not the 2nd time).
+
+// how to use "const [loading, setLoading] = useState(true);"? I am using a loader, so where/how can I handle the loading state?
+
+// when filtering results in =< 2 results, the grid display is weird
+
 import { SimpleGrid, AbsoluteCenter, Checkbox, Flex } from "@chakra-ui/react";
 import { useLoaderData } from "react-router-dom";
 import { useReducer, useContext } from "react";
@@ -37,28 +44,6 @@ export const EventsPage = () => {
             return categoryIds.includes(id);
           });
         });
-
-  // const Component = () => {
-  //   if (loading) {
-  //     return Array.from({ length: 12 }).map((_, i) => (
-  //       <EventCardSkeleton key={i} />
-  //     ));
-  //   } else if (filteredEvents.length === 0) {
-  //     return <AbsoluteCenter>No events found</AbsoluteCenter>;
-  //   } else {
-  //     return (
-  //       <SimpleGrid
-  //         gap={4}
-  //         minChildWidth={{ base: "200px", md: "300px" }}
-  //         mx="10"
-  //       >
-  //         {filteredEvents.map((event) => (
-  //           <EventCard key={event.id} event={event} />
-  //         ))}
-  //       </SimpleGrid>
-  //     );
-  //   }
-  // };
 
   return (
     <>
