@@ -1,5 +1,6 @@
 // require at least 1 checkbox to be selected
 // doesn't show checked checkboxes properly. Functionality works, but checks don't show on form
+// how to get image uploaded
 
 "use client";
 import {
@@ -14,13 +15,44 @@ import {
   CheckboxGroup,
   Fieldset,
   Text,
+  FileUpload,
+  Float,
+  useFileUploadContext,
 } from "@chakra-ui/react";
 import { useState, useContext } from "react";
-import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { LuFileImage, LuX } from "react-icons/lu";
 import { EventsContext } from "../EventsContext";
-import { getTime } from "./getTime";
 import { toaster } from "./ui/toaster";
+import { getTime } from "./getTime";
+
+// image upload
+const FileUploadList = () => {
+  const fileUpload = useFileUploadContext();
+  const files = fileUpload.acceptedFiles;
+  if (files.length === 0) return null;
+  return (
+    <FileUpload.ItemGroup>
+      {files.map((file) => (
+        <FileUpload.Item
+          w="auto"
+          boxSize="20"
+          p="2"
+          file={file}
+          key={file.name}
+        >
+          <FileUpload.ItemPreviewImage />
+          <Float placement="top-end">
+            <FileUpload.ItemDeleteTrigger boxSize="4" layerStyle="fill.solid">
+              <LuX />
+            </FileUpload.ItemDeleteTrigger>
+          </Float>
+        </FileUpload.Item>
+      ))}
+    </FileUpload.ItemGroup>
+  );
+};
 
 // form dialog
 export default function EditEventForm({ eventToEdit, open, onClose, finish }) {
@@ -193,6 +225,17 @@ export default function EditEventForm({ eventToEdit, open, onClose, finish }) {
                     {errors.categoryIds?.message}
                   </Fieldset.ErrorText>
                 </Fieldset.Root>
+
+                {/* event image */}
+                <FileUpload.Root accept="image/*">
+                  <FileUpload.HiddenInput />
+                  <FileUpload.Trigger asChild>
+                    <Button variant="outline" size="sm">
+                      <LuFileImage /> Upload Image
+                    </Button>
+                  </FileUpload.Trigger>
+                  <FileUploadList />
+                </FileUpload.Root>
               </HStack>
             </Dialog.Body>
 

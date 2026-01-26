@@ -1,9 +1,9 @@
 // doesn't show checked checkboxes properly when filtering. Functionality works, but checks don't show on form
 // (works the 1st time you filter, not the 2nd time).
 
-// how to use "const [loading, setLoading] = useState(true);"? I am using a loader, so where/how can I handle the loading state?
+// how to use "[loading, setLoading] = useState(true);"? I am using a loader, so where/how can I handle the loading state?
 
-// when filtering results in =< 2 results, the grid display is weird
+// when filtering & showing =< 2 results, the grid display looks weird (too much spacing)
 
 import { SimpleGrid, AbsoluteCenter, Checkbox, Flex } from "@chakra-ui/react";
 import { useLoaderData } from "react-router-dom";
