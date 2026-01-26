@@ -3,7 +3,7 @@
 
 // how to use "[loading, setLoading] = useState(true);"? I am using a loader, so where/how can I handle the loading state?
 
-// when filtering & showing =< 2 results, the grid display looks weird (too much spacing)
+// when filtering & showing 2 or 3  results, the grid display looks weird on bigger screens (too much spacing)
 
 import { SimpleGrid, AbsoluteCenter, Checkbox, Flex } from "@chakra-ui/react";
 import { useLoaderData } from "react-router-dom";
@@ -13,7 +13,7 @@ import { filterReducer } from "../filterReducer";
 import { EventCard } from "../components/EventCard";
 import { SearchBar } from "../components/SearchBar";
 import { FilterMenu } from "../components/FilterMenu";
-import EventCardSkeleton from "../components/EventCardSkeleton";
+// import EventCardSkeleton from "../components/EventCardSkeleton";
 
 export const loader = async () => {
   const eventsResponse = await fetch("http://localhost:3000/events");
@@ -96,9 +96,10 @@ export const EventsPage = () => {
             <EventCard key={event.id} event={event} />
           ))}
 
-          {Array.from({ length: 12 }).map((_, i) => (
+          {/* Skeleton test */}
+          {/* {Array.from({ length: 12 }).map((_, i) => (
             <EventCardSkeleton key={i} />
-          ))}
+          ))} */}
         </SimpleGrid>
       )}
     </>
