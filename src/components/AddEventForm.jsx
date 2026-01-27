@@ -1,5 +1,4 @@
-// require at least 1 checkbox to be selected
-// how to get image uploaded
+// how to get image uploaded - gewoon URL input van maken
 
 "use client";
 import {
@@ -14,43 +13,13 @@ import {
   CheckboxGroup,
   Fieldset,
   Text,
-  FileUpload,
-  Float,
-  useFileUploadContext,
+  // InputGroup,
 } from "@chakra-ui/react";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { LuFileImage, LuX } from "react-icons/lu";
 import { EventsContext } from "../EventsContext";
 import { toaster } from "./ui/toaster";
-
-// image upload
-const FileUploadList = () => {
-  const fileUpload = useFileUploadContext();
-  const files = fileUpload.acceptedFiles;
-  if (files.length === 0) return null;
-  return (
-    <FileUpload.ItemGroup>
-      {files.map((file) => (
-        <FileUpload.Item
-          w="auto"
-          boxSize="20"
-          p="2"
-          file={file}
-          key={file.name}
-        >
-          <FileUpload.ItemPreviewImage />
-          <Float placement="top-end">
-            <FileUpload.ItemDeleteTrigger boxSize="4" layerStyle="fill.solid">
-              <LuX />
-            </FileUpload.ItemDeleteTrigger>
-          </Float>
-        </FileUpload.Item>
-      ))}
-    </FileUpload.ItemGroup>
-  );
-};
 
 // form dialog
 export default function AddEventForm({ open, onClose, finish }) {
@@ -72,11 +41,11 @@ export default function AddEventForm({ open, onClose, finish }) {
       createdBy: 0,
       title: data.title,
       description: data.description,
-      image: "http://localhost:5173/src/images/new-event.jpg",
+      image: data.image,
       categoryIds: checked,
       location: data.location,
-      startTime: data.startTime,
-      endTime: data.endTime,
+      startTime: `${data.startDate}T${data.startHHMM}:00.000`,
+      endTime: `${data.endDate}T${data.endHHMM}:00.000`,
     };
 
     const result = await fetch("http://localhost:3000/events", {
@@ -145,11 +114,24 @@ export default function AddEventForm({ open, onClose, finish }) {
                 <Field.ErrorText>{errors.location?.message}</Field.ErrorText>
               </Field.Root>
 
+              {/* event image */}
+              <Field.Root invalid={errors.image} mt={4}>
+                <Field.Label>Image url</Field.Label>
+                <Input
+                  type="text"
+                  placeholder="i.e. https://images.pexels.com/photos/7429750/pexels-photo-7429750.jpeg"
+                  {...register("image", {
+                    required: "Image url is required",
+                  })}
+                />
+                <Field.ErrorText>{errors.image?.message}</Field.ErrorText>
+              </Field.Root>
+
               {/* event location */}
               <Field.Root invalid={errors.location} mt={4}>
                 <Field.Label>Location</Field.Label>
                 <Input
-                  type="location"
+                  type="text"
                   placeholder="i.e. Downtown Bowling Alley"
                   {...register("location", {
                     required: "Location is required",
@@ -160,69 +142,90 @@ export default function AddEventForm({ open, onClose, finish }) {
 
               {/* event startTime */}
               <HStack gap="10" width="full">
-                <Field.Root invalid={errors.startTime} mt={4}>
+                {/* date */}
+                <Field.Root invalid={errors.startDate} mt={4}>
+                  <Field.Label>Start date</Field.Label>
+                  <Input
+                    type="date"
+                    {...register("startDate", {
+                      required: "Start date is required",
+                    })}
+                  />
+                  <Field.ErrorText>{errors.startDate?.message}</Field.ErrorText>
+                </Field.Root>
+
+                {/* time HHMM*/}
+                <Field.Root invalid={errors.startHHMM} mt={4}>
                   <Field.Label>Start time</Field.Label>
                   <Input
                     type="time"
-                    {...register("startTime", {
+                    {...register("startHHMM", {
                       required: "Start time is required",
                     })}
                   />
-                  <Field.ErrorText>{errors.startTime?.message}</Field.ErrorText>
+                  <Field.ErrorText>{errors.startHHMM?.message}</Field.ErrorText>
+                </Field.Root>
+              </HStack>
+
+              {/* event endTime */}
+              <HStack gap="10" width="full">
+                {/* date */}
+                <Field.Root invalid={errors.endDate} mt={4}>
+                  <Field.Label>End date</Field.Label>
+                  <Input
+                    type="date"
+                    {...register("endDate", {
+                      required: "End date is required",
+                    })}
+                  />
+                  <Field.ErrorText>{errors.endDate?.message}</Field.ErrorText>
                 </Field.Root>
 
-                {/* event endTime */}
-                <Field.Root invalid={errors.endTime} mt={4}>
+                {/* time HHMM*/}
+                <Field.Root invalid={errors.endHHMM} mt={4}>
                   <Field.Label>End time</Field.Label>
                   <Input
                     type="time"
-                    {...register("endTime", {
+                    {...register("endHHMM", {
                       required: "End time is required",
                     })}
                   />
-                  <Field.ErrorText>{errors.endTime?.message}</Field.ErrorText>
+                  <Field.ErrorText>{errors.endHHMM?.message}</Field.ErrorText>
                 </Field.Root>
               </HStack>
 
-              <HStack gap="10" width="full" mt="4">
-                {/* event categories */}
-                <Fieldset.Root invalid={errors.categoryIds}>
-                  <CheckboxGroup name="categories">
-                    <Fieldset.Legend fontSize="sm" mb="2">
-                      Select categories
-                    </Fieldset.Legend>
-                    <Fieldset.Content>
-                      {categories.map((category) => (
-                        <Checkbox.Root
-                          key={category.id}
+              {/* event categories */}
+              <Fieldset.Root invalid={errors.categoryIds} mt="4">
+                <CheckboxGroup name="categories">
+                  <Fieldset.Legend fontSize="sm" mb="2">
+                    Select categories
+                  </Fieldset.Legend>
+                  <Fieldset.Content>
+                    {categories.map((category) => (
+                      <Checkbox.Root
+                        key={category.id}
+                        value={category.id}
+                        name="categoryIds"
+                        checked={checked.includes(category.value)}
+                        onChange={(e) => handleChange(e)}
+                      >
+                        <Checkbox.HiddenInput
+                          {...register("categoryIds", {
+                            required: "Select at least 1 category",
+                          })}
                           value={category.id}
-                          name="categoryIds"
-                          checked={checked.includes(category.value)}
-                          onChange={(e) => handleChange(e)}
-                        >
-                          <Checkbox.HiddenInput />
-                          <Checkbox.Control />
-                          <Checkbox.Label>{category.name}</Checkbox.Label>
-                        </Checkbox.Root>
-                      ))}
-                    </Fieldset.Content>
-                  </CheckboxGroup>
-                  <Fieldset.ErrorText>
-                    {errors.categoryIds?.message}
-                  </Fieldset.ErrorText>
-                </Fieldset.Root>
+                        />
 
-                {/* event image */}
-                <FileUpload.Root accept="image/*">
-                  <FileUpload.HiddenInput />
-                  <FileUpload.Trigger asChild>
-                    <Button variant="outline" size="sm">
-                      <LuFileImage /> Upload Image
-                    </Button>
-                  </FileUpload.Trigger>
-                  <FileUploadList />
-                </FileUpload.Root>
-              </HStack>
+                        <Checkbox.Control />
+                        <Checkbox.Label>{category.name}</Checkbox.Label>
+                      </Checkbox.Root>
+                    ))}
+                  </Fieldset.Content>
+                </CheckboxGroup>
+                <Fieldset.ErrorText>
+                  {errors.categoryIds?.message}
+                </Fieldset.ErrorText>
+              </Fieldset.Root>
             </Dialog.Body>
 
             {/* footer buttons */}
