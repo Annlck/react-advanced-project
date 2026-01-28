@@ -18,6 +18,7 @@ import { EventsContext } from "../EventsContext";
 
 // form dialog
 export default function EventForm({
+  formTitle,
   open,
   onClose,
   changeFn,
@@ -41,7 +42,7 @@ export default function EventForm({
       <Dialog.Backdrop />
       <Dialog.Positioner>
         <Dialog.Content>
-          <Dialog.Header textStyle="xl">Create a new event</Dialog.Header>
+          <Dialog.Header textStyle="xl">{formTitle}</Dialog.Header>
           <form onSubmit={handleSubmit(changeFn)}>
             <Dialog.Body>
               {/* event title */}

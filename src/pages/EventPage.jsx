@@ -18,6 +18,7 @@ import {
   LuPencil,
   LuMapPin,
   LuClock,
+  LuCalendar,
 } from "react-icons/lu";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
@@ -58,8 +59,8 @@ export const EventPage = () => {
       image: data.image,
       categoryIds: checked,
       location: data.location,
-      startTime: data.startTime,
-      endTime: data.endTime,
+      startTime: `${data.startDate}T${data.startHHMM}:00.000`,
+      endTime: `${data.endDate}T${data.endHHMM}:00.000`,
     };
 
     const result = await fetch(`http://localhost:3000/events/${event.id}`, {
@@ -128,6 +129,21 @@ export const EventPage = () => {
 
               <HStack mb="2">
                 <Icon size="sm">
+                  <LuCalendar />
+                </Icon>
+                {event.startTime.substring(0, 10) ===
+                event.endTime.substring(0, 10) ? (
+                  <Text> {event.startTime.substring(0, 10)} </Text>
+                ) : (
+                  <Text>
+                    {event.startTime.substring(0, 10)} until{" "}
+                    {event.endTime.substring(0, 10)}
+                  </Text>
+                )}
+              </HStack>
+
+              <HStack mb="2">
+                <Icon size="sm">
                   <LuClock />
                 </Icon>
                 <Text> {event.startTime.substring(11, 16)} </Text>
@@ -178,13 +194,14 @@ export const EventPage = () => {
       </Center>
 
       <EventForm
+        formTitle="Edit event"
         open={editModalOpen}
         onClose={() => {
           setEditModalOpen(false);
         }}
         onCheckboxChange={(e) => handleChange(e)}
         changeFn={editEvent}
-        submitButtonText="Add event"
+        submitButtonText="Edit event"
         placeholderEvent={event}
         defaultValues={{
           title: event.title,

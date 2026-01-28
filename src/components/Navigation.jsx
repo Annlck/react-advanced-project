@@ -100,6 +100,7 @@ export const Navigation = () => {
       </nav>
 
       <EventForm
+        formTitle="Create a new event"
         open={modalOpen}
         onClose={() => {
           setModalOpen(false);
