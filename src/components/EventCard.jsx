@@ -2,7 +2,6 @@ import { Card, Image, Text, HStack, Tag } from "@chakra-ui/react";
 import { useNavigate } from "react-router";
 import { useContext } from "react";
 import { EventsContext } from "../EventsContext";
-import { getTime } from "./getTime";
 
 export const EventCard = ({ event }) => {
   const { matchCategories } = useContext(EventsContext);
@@ -25,9 +24,9 @@ export const EventCard = ({ event }) => {
         <Card.Description>{event.description}</Card.Description>
 
         <HStack>
-          <Text> {getTime(event.startTime)} </Text>
+          <Text> {event.startTime.substring(11, 16)} </Text>
           <Text> - </Text>
-          <Text> {getTime(event.endTime)} </Text>
+          <Text> {event.endTime.substring(11, 16)} </Text>
         </HStack>
       </Card.Body>
       <Card.Footer>

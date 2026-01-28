@@ -22,7 +22,6 @@ import {
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { EventsContext } from "../EventsContext";
-import { getTime } from "../components/getTime";
 import { Toaster, toaster } from "../components/ui/toaster";
 import { DeleteEventDialog } from "../components/DeleteEventDialog";
 import EventForm from "../components/EventForm";
@@ -131,9 +130,9 @@ export const EventPage = () => {
                 <Icon size="sm">
                   <LuClock />
                 </Icon>
-                <Text> {getTime(event.startTime)} </Text>
+                <Text> {event.startTime.substring(11, 16)} </Text>
                 <Text> - </Text>
-                <Text> {getTime(event.endTime)} </Text>
+                <Text> {event.endTime.substring(11, 16)} </Text>
               </HStack>
 
               <HStack>
