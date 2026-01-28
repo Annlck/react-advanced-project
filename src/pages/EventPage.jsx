@@ -19,6 +19,8 @@ import {
   LuMapPin,
   LuClock,
   LuCalendar,
+  LuCalendarCheck2,
+  LuCalendarX2,
 } from "react-icons/lu";
 import { useLoaderData, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
@@ -127,29 +129,47 @@ export const EventPage = () => {
 
               <Separator my={{ base: "4", lg: "6" }} />
 
-              <HStack mb="2">
-                <Icon size="sm">
-                  <LuCalendar />
-                </Icon>
-                {event.startTime.substring(0, 10) ===
-                event.endTime.substring(0, 10) ? (
-                  <Text> {event.startTime.substring(0, 10)} </Text>
-                ) : (
-                  <Text>
-                    {event.startTime.substring(0, 10)} until{" "}
-                    {event.endTime.substring(0, 10)}
-                  </Text>
-                )}
-              </HStack>
+              {event.startTime.substring(0, 10) ===
+              event.endTime.substring(0, 10) ? (
+                <>
+                  <HStack mb="2">
+                    <Icon size="sm">
+                      <LuCalendar />
+                    </Icon>
+                    <Text> {event.startTime.substring(0, 10)} </Text>
+                  </HStack>
 
-              <HStack mb="2">
-                <Icon size="sm">
-                  <LuClock />
-                </Icon>
-                <Text> {event.startTime.substring(11, 16)} </Text>
-                <Text> - </Text>
-                <Text> {event.endTime.substring(11, 16)} </Text>
-              </HStack>
+                  <HStack mb="2">
+                    <Icon size="sm">
+                      <LuClock />
+                    </Icon>
+                    <Text> {event.startTime.substring(11, 16)} </Text>
+                    <Text> - </Text>
+                    <Text> {event.endTime.substring(11, 16)} </Text>
+                  </HStack>
+                </>
+              ) : (
+                <>
+                  <HStack mb="2">
+                    <Icon size="sm">
+                      <LuCalendarCheck2 />
+                    </Icon>
+                    <Text>
+                      {event.startTime.substring(0, 10)}{" "}
+                      {event.startTime.substring(11, 16)}
+                    </Text>
+                  </HStack>
+                  <HStack mb="2">
+                    <Icon size="sm">
+                      <LuCalendarX2 />
+                    </Icon>
+                    <Text>
+                      {event.endTime.substring(0, 10)}{" "}
+                      {event.endTime.substring(11, 16)}
+                    </Text>
+                  </HStack>
+                </>
+              )}
 
               <HStack>
                 <Icon size="sm">
