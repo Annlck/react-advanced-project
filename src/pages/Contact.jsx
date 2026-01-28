@@ -1,5 +1,11 @@
-import { Heading } from "@chakra-ui/react";
+import { Heading, AbsoluteCenter } from "@chakra-ui/react";
 
 export const Contact = () => {
-  return <Heading>Contact us</Heading>;
+  return (
+    <>
+      <AbsoluteCenter>
+        <Heading size="md">This page is currently under construction</Heading>
+      </AbsoluteCenter>
+    </>
+  );
 };
