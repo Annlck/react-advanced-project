@@ -9,9 +9,15 @@ import {
 } from "@chakra-ui/react";
 import { LuFilter } from "react-icons/lu";
 import { useState } from "react";
+import { useReducer } from "react";
+import { filterReducer } from "../filterReducer";
 
 export const FilterMenu = ({ checkboxes }) => {
   const [filterOpen, setFilterOpen] = useState(false);
+
+  const [state, dispatch] = useReducer(filterReducer, {
+    selectedCheckboxes: [],
+  });
 
   return (
     <Drawer.Root open={filterOpen} onOpenChange={(e) => setFilterOpen(e.open)}>
@@ -35,7 +41,17 @@ export const FilterMenu = ({ checkboxes }) => {
             </Drawer.Header>
             <Drawer.Body>
               <Fieldset.Root>
-                <CheckboxGroup name="categories">
+                <CheckboxGroup
+                  value={state.selectedCheckboxes}
+                  checked={state.selectedCheckboxes}
+                  onChange={(e) =>
+                    dispatch({
+                      type: "create_array_of_checked_ids",
+                      payload: e.target.value,
+                    })
+                  }
+                  name="categories"
+                >
                   <Fieldset.Legend fontSize="sm" mb="2">
                     Category
                   </Fieldset.Legend>
