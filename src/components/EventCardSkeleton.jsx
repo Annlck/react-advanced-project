@@ -20,5 +20,3 @@ export default function EventCardSkeleton() {
     </Box>
   );
 }
-
-// json-server events.json --delay 3000

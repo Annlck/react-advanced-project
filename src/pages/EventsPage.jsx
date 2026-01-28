@@ -1,6 +1,3 @@
-// doesn't show checked checkboxes properly when filtering. Functionality works, but checks don't show on form
-// (works the 1st time you filter, not the 2nd time).
-
 import { SimpleGrid, AbsoluteCenter, Checkbox, Flex } from "@chakra-ui/react";
 import { useReducer, useContext, useEffect, useState } from "react";
 import { EventsContext } from "../EventsContext";
@@ -66,8 +63,6 @@ export const EventsPage = () => {
               key={category.id}
               value={category.id}
               name="categoryIds"
-              // checked doesnt work
-              checked={state.selectedCheckboxes.includes(category.id)}
               onChange={() =>
                 dispatch({
                   type: "create_array_of_checked_ids",
