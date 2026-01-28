@@ -23,9 +23,9 @@ import { useLoaderData, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { EventsContext } from "../EventsContext";
 import { getTime } from "../components/getTime";
-import { Toaster } from "../components/ui/toaster";
+import { Toaster, toaster } from "../components/ui/toaster";
 import { DeleteEventDialog } from "../components/DeleteEventDialog";
-import EditEventForm from "../components/EditEventForm";
+import EventForm from "../components/EventForm";
 
 export const loader = async ({ params }) => {
   const eventResponse = await fetch(
@@ -41,6 +41,53 @@ export const EventPage = () => {
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [deleteModalOpen, setDeleteModalOpen] = useState(false);
   const navigate = useNavigate();
+
+  // handleChange checkboxes
+  const [checked, setChecked] = useState([]);
+  const handleChange = (e) => {
+    const value = Number(e.target.value);
+    setChecked((prev) =>
+      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value],
+    );
+  };
+
+  // editEvent function
+  const editEvent = async (data) => {
+    const editedEvent = {
+      title: data.title,
+      description: data.description,
+      image: data.image,
+      categoryIds: checked,
+      location: data.location,
+      startTime: data.startTime,
+      endTime: data.endTime,
+    };
+
+    const result = await fetch(`http://localhost:3000/events/${event.id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(editedEvent),
+    });
+
+    setEditModalOpen(false);
+
+    if (result.ok) {
+      toaster.create({
+        title: "Success",
+        description: "Event has been edited",
+        type: "success",
+      });
+      navigate(`/events/${event.id}`);
+      return;
+    } else {
+      toaster.create({
+        title: "Error",
+        description: "Could not edit event",
+        type: "error",
+      });
+      return;
+    }
+  };
 
   return (
     <>
@@ -131,15 +178,26 @@ export const EventPage = () => {
         </Card.Root>
       </Center>
 
-      <EditEventForm
+      <EventForm
         open={editModalOpen}
         onClose={() => {
           setEditModalOpen(false);
         }}
-        finish={() => {
-          setEditModalOpen(false);
+        onCheckboxChange={(e) => handleChange(e)}
+        changeFn={editEvent}
+        submitButtonText="Add event"
+        placeholderEvent={event}
+        defaultValues={{
+          title: event.title,
+          description: event.description,
+          image: event.image,
+          categoryIds: event.categoryIds,
+          location: event.location,
+          startDate: event.startTime.substring(0, 10),
+          startHHMM: event.startTime.substring(11, 16),
+          endDate: event.endTime.substring(0, 10),
+          endHHMM: event.endTime.substring(11, 16),
         }}
-        eventToEdit={event}
       />
 
       <DeleteEventDialog
