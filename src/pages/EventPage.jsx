@@ -45,7 +45,7 @@ export const EventPage = () => {
   const navigate = useNavigate();
 
   // handleChange checkboxes
-  const [checked, setChecked] = useState([]);
+  const [checked, setChecked] = useState(event.categoryIds);
   const handleChange = (e) => {
     const value = Number(e.target.value);
     setChecked((prev) =>
@@ -219,8 +219,9 @@ export const EventPage = () => {
         onClose={() => {
           setEditModalOpen(false);
         }}
-        onCheckboxChange={(e) => handleChange(e)}
         changeFn={editEvent}
+        checked={checked}
+        handleChange={handleChange}
         submitButtonText="Edit event"
         placeholderEvent={event}
         defaultValues={{

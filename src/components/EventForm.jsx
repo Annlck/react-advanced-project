@@ -23,7 +23,8 @@ export default function EventForm({
   onClose,
   changeFn,
   placeholderEvent,
-  onCheckboxChange,
+  checked,
+  handleChange,
   submitButtonText,
   defaultValues,
 }) {
@@ -150,7 +151,12 @@ export default function EventForm({
 
               {/* event categories */}
               <Fieldset.Root invalid={errors.categoryIds} mt="4">
-                <CheckboxGroup name="categories">
+                <CheckboxGroup
+                  name="categories"
+                  value={checked}
+                  checked={checked}
+                  onChange={handleChange}
+                >
                   <Fieldset.Legend fontSize="sm" mb="2">
                     Select categories
                   </Fieldset.Legend>
@@ -160,8 +166,6 @@ export default function EventForm({
                         key={category.id}
                         value={category.id}
                         name="categoryIds"
-                        // checked={checked.includes(category.value)}
-                        onChange={onCheckboxChange}
                       >
                         <Checkbox.HiddenInput
                           {...register("categoryIds", {
