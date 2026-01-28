@@ -59,12 +59,12 @@ export default function EventForm({
               <Field.Root invalid={errors.description} mt={4}>
                 <Field.Label>Description</Field.Label>
                 <Textarea
-                  placeholder={placeholderEvent.title}
+                  placeholder={placeholderEvent.description}
                   {...register("description", {
                     required: "Description is required",
                   })}
                 />
-                <Field.ErrorText>{errors.location?.message}</Field.ErrorText>
+                <Field.ErrorText>{errors.description?.message}</Field.ErrorText>
               </Field.Root>
 
               {/* event image */}
@@ -72,7 +72,7 @@ export default function EventForm({
                 <Field.Label>Image url</Field.Label>
                 <Input
                   type="text"
-                  placeholder={placeholderEvent.title}
+                  placeholder={placeholderEvent.image}
                   {...register("image", {
                     required: "Image url is required",
                   })}
@@ -85,7 +85,7 @@ export default function EventForm({
                 <Field.Label>Location</Field.Label>
                 <Input
                   type="text"
-                  placeholder={placeholderEvent.title}
+                  placeholder={placeholderEvent.location}
                   {...register("location", {
                     required: "Location is required",
                   })}
