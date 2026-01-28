@@ -85,7 +85,7 @@ export const EventsPage = () => {
 
       {/* events */}
       {loading ? (
-        <SimpleGrid columns={[2, 3, 4]} gap={4} mx="10">
+        <SimpleGrid columns={[1, 2, 2, 3, 4]} gap={4} mx="10">
           {Array.from({ length: 12 }).map((_, i) => (
             <EventCardSkeleton key={i} />
           ))}
